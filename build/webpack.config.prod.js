@@ -3,6 +3,9 @@
 const path = require('path'),
     HtmlWebpackPlugin = require('html-webpack-plugin'),
     {
+        CleanWebpackPlugin
+    } = require('clean-webpack-plugin'),
+    {
         VueLoaderPlugin
     } = require('vue-loader')
 
@@ -12,15 +15,8 @@ module.exports = {
         app: './src/app.js'
     },
     output: {
-        filename: '[name].[hash].js',
+        filename: '[name].[contenthash].js',
         path: path.resolve(__dirname, 'dist'),
-    },
-    devtool: 'inline-source-map',
-    devServer: {
-        hot: true,
-        watchOptions: {
-            poll: true
-        }
     },
     module: {
         rules: [{
@@ -46,23 +42,14 @@ module.exports = {
     },
     plugins: [
         new VueLoaderPlugin(),
+        new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: '纺织品自动化疵点检测操作系统',
             template: 'index.html'
         }),
     ],
     optimization: {
-        moduleIds: 'hashed',
-        runtimeChunk: 'single',
-        splitChunks: {
-            cacheGroups: {
-                vendor: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: 'vendors',
-                    chunks: 'all',
-                },
-            },
-        },
+        runtimeChunk: 'single'
     },
 }
 

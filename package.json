@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --open --config build/webpack.config.dev.js",
-    "build": "webpack --config build/webpack.config.dev.js"
+    "build": "webpack --config build/webpack.config.prod.js"
   },
   "author": "clx",
   "license": "ISC",
