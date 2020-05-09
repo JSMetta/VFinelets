@@ -1,4 +1,5 @@
 'use strict'
+
 const path = require('path'),
     HtmlWebpackPlugin = require('html-webpack-plugin'),
     {
@@ -19,7 +20,10 @@ module.exports = {
     },
     devtool: 'inline-source-map',
     devServer: {
-        contentBase: './dist',
+        hot: true,
+        watchOptions: {
+            poll: true
+        }
     },
     module: {
         rules: [{
@@ -29,10 +33,18 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    'style-loader',
-                    'css-loader',
-                ],
+                    'vue-style-loader',
+                    'css-loader'
+                ]
             },
+            {
+                test: /\.styl(us)?$/,
+                use: [
+                    'vue-style-loader',
+                    'css-loader',
+                    'stylus-loader'
+                ]
+            }
         ]
     },
     plugins: [

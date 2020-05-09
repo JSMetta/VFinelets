@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --open --config build/webpack.config.dev.js",
+    "dev": "webpack-dev-server --open --config build/webpack.config.dev.js",
     "build": "webpack --config build/webpack.config.dev.js"
   },
   "author": "clx",
@@ -17,6 +17,8 @@
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.5.3",
     "html-webpack-plugin": "^4.3.0",
+    "stylus": "^0.54.7",
+    "stylus-loader": "^3.0.2",
     "vue-loader": "^15.9.2",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.11",
