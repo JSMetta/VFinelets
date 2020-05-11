@@ -1,13 +1,12 @@
 import {
   $get, $post, $login, $put, $entry, $delete
 } from '../plugins/fetch'
-// import router from '../router'
 import queryCollection from '../helpers/DealWithQueryCollection'
 
 const actions = {
   async entry ({commit}) {
-    let entry = await $entry()
-    let links = queryCollection.dealWithLinkages(entry)
+    const entry = await $entry()
+    const links = queryCollection.dealWithLinkages(entry)
     commit('entry', links)
   },
 

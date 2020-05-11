@@ -1,6 +1,16 @@
-import store from '../../src/store'
 import _ from 'lodash'
 let baseUrl, entryUrl, loginUrl
+let logout, getToken
+
+function __getFinalUrl (url) {
+  const finalUrl = url.startsWith('http') ? url : `${baseUrl}${url}`
+  return finalUrl
+}
+
+function __setHeadersAuthorization (headers) {
+  const token = getToken()
+  headers.Authorization = 'Bearer ' + token
+}
 
 async function __fetch (url, options) {
   const response = await fetch(url, options)
@@ -9,7 +19,7 @@ async function __fetch (url, options) {
     return data
   } else if (response.status === 403) {
     // If the session is no longer valid, We logout
-    store.dispatch('logout')
+    logout()
   } else {
     const message = await response.text()
     const error = new Error(message)
@@ -27,15 +37,17 @@ async function __sendHttp (url, method, data) {
     method: method,
     body: data
   }
-  let token = store.getters.token
-  if (token) {
-    options.headers.Authorization = 'Bearer ' + token
-  }
+  __setHeadersAuthorization(options.headers)
   if (options.body && _.isObject(options.body)) {
     options.body = JSON.stringify(options.body)
   }
+  const finalUrl = __getFinalUrl(url)
+  const response = await __fetch(finalUrl, options)
+  return response
+}
 
-  const response = await __fetch(url, options)
+export async function $get (url) {
+  const response = await __sendHttp(url, 'GET')
   return response
 }
 
@@ -44,37 +56,29 @@ export async function $entry () {
   return data.links
 }
 
-export async function $get (url, data) {
-  const finalUrl = url.startsWith('http') ? url : `${baseUrl}${url}`
-  const response = await __sendHttp(finalUrl, 'GET', data)
+export async function $post (url, data) {
+  const response = await __sendHttp(url, 'POST', data)
   return response
 }
 
-export async function $post (url, data) {
-  const finalUrl = url.startsWith('http') ? url : `${baseUrl}${url}`
-  const response = await __sendHttp(finalUrl, 'POST', data)
-  return response
+export async function $login (data) {
+  const user = await $post(loginUrl, data)
+  return user
 }
 
 export async function $delete (url) {
-  const finalUrl = url.startsWith('http') ? url : `${baseUrl}${url}`
+  const finalUrl = __getFinalUrl(url)
   const options = {
-    headers: {
-      'Cache-Control': 'no-cache', // TODO: we should use cache in product mode
-      'content-type': 'application/json'
-    },
+    headers: {},
     method: 'DELETE'
   }
-  let token = store.getters.token
-  if (token) {
-    options.headers.Authorization = 'Bearer ' + token
-  }
+  __setHeadersAuthorization(options.headers)
   const {ok, status} = await fetch(finalUrl, options)
   return {ok, status}
 }
 
 export async function $put (url, version, data) {
-  const finalUrl = url.startsWith('http') ? url : `${baseUrl}${url}`
+  const finalUrl = __getFinalUrl(url)
   const options = {
     method: 'PUT',
     headers: {
@@ -85,10 +89,8 @@ export async function $put (url, version, data) {
   if (version !== undefined && version !== null) {
     options.headers['If-Match'] = version
   }
-  let token = store.getters.token
-  if (token) {
-    options.headers.Authorization = 'Bearer ' + token
-  }
+  __setHeadersAuthorization(options.headers)
+
   const response = await fetch(finalUrl, options)
   if (response.status !== 200 && response.status !== 204) {
     const message = `Update failed, status code=${response.status}`
@@ -99,22 +101,15 @@ export async function $put (url, version, data) {
 }
 
 export async function $upload (url, formData) {
+  const finalUrl = __getFinalUrl(url)
   const finalOptions = {
     headers: {},
     method: 'POST',
     body: formData
   }
-  let token = store.getters.token
-  if (token) {
-    finalOptions.headers.Authorization = 'Bearer ' + token
-  }
-  const result = await fetch(`${baseUrl}${url}`, finalOptions)
+  __setHeadersAuthorization(options.headers)
+  const result = await fetch(finalUrl, finalOptions)
   return result
-}
-
-export async function $login (data) {
-  const user = await __sendHttp(loginUrl, 'POST', data)
-  return user
 }
 
 export default {
@@ -123,5 +118,7 @@ export default {
     baseUrl = options.baseUrl
     entryUrl = options.entryUrl
     loginUrl = options.loginUrl
+    logout = options.logout
+    getToken = options.getToken
   }
 }

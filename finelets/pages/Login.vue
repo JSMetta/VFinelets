@@ -2,7 +2,7 @@
   <div class="jumbotron-fluid">
     <div class="row justify-content-center">
       <img
-        src="/static/img/jsmetta.jpg"
+        src="../static/img/jsmetta.jpg"
         class="logo rounded-circle"
       />
     </div>
@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+// import { mapActions } from 'vuex'
 export default {
   data () {
     return {
@@ -79,10 +79,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['login', 'logout']),
+    // ...mapActions(['login', 'logout']),
 
     async handleLogin () {
-      await this.login({username: this.username, password: this.password})
+      // await this.login({username: this.username, password: this.password})
+      await this.$store.dispatch('login', {username: this.username, password: this.password})
     },
     async handleLogout () {
       this.logout()
@@ -95,9 +96,6 @@ export default {
 </script>
 
 <style>
-.main-area {
-  padding: 5rem;
-}
 .logo {
   height: 70px;
   width: 70px;

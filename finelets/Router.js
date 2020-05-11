@@ -1,53 +1,66 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Login from './pages/Login.vue'
+import Signup from './pages/Signup.vue'
+import NotFound from './pages/NotFound.vue'
+import Admin from './pages/Admin.vue'
+import MasterUser from './pages/MasterUser.vue'
+import constDefs from './ConstantsDef'
+import mergeStartPageOfRoles from './MergeStartPageOfRoles'
+
+const __routes = [
+  {
+    path: '/master/admin',
+    name: constDefs.PAGE_NAME_ADMIN,
+    meta: {
+      role: constDefs.ROLE_ADMIN
+    },
+    component: Admin
+  },
+  {
+    path: '/master/user',
+    name: 'masterUser',
+    meta: {
+      role: constDefs.ROLE_ADMIN
+    },
+    component: MasterUser
+  },
+  {
+    path: '/login',
+    name: constDefs.PAGE_NAME_LOGIN,
+    meta: {
+      guest: true
+    },
+    component: Login
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    meta: {
+      public: true
+    },
+    component: Signup
+  },
+  {
+    path: '*',
+    meta: {public: true},
+    component: NotFound
+  }
+]
+
 Vue.use(VueRouter)
 
-let __config
-
-function __beforeEach (to, from, next) {
-  // 尚未登录时，只能去public或guest页面，对任何访问其它页面的企图，均重定向到login页面(guest)
-  if (!__config.isSignIn() && !to.meta.public && !to.meta.guest) {
-    next({
-      name: __config.routes.login,
-      params: {
-        wantedRoute: to.fullPath
-      }
-    })
-    return
-  }
-
-  // 登录后
-  if (__config.isSignIn()) {
-    // 拒绝转到guest页面, 如login页面
-    if (to.meta.guest) return
-
-    // 拒绝转到与角色不相符的页面：
-    if (!to.meta.public && !to.meta.guest && to.meta.role !== __config.role()) {
-      // 如果来自与角色相符的页面，则直接拒绝，保持原页面不变；
-      if (from.meta.role === __config.role()) return
-
-      // 否则，转到角色相应的起始页面
-      const toPage = __config.startRouteName()
-      next({
-        name: toPage
-      })
-    }
-  }
-
-  next()
-}
-
-function __createRouter () {
+function __create (beforeEach, config) {
+  const finalRoutes = [...config.routes, ...__routes]
   const router = new VueRouter({
-    routes: __config.routes.items
+    routes: finalRoutes,
+    starts: mergeStartPageOfRoles(config.starts)
   })
-  router.beforeEach(__beforeEach)
+  router.beforeEach(beforeEach)
   return router
 }
 
-function __create (config) {
-  __config = config
-  return __createRouter()
-}
-
 export default __create
+
+
+

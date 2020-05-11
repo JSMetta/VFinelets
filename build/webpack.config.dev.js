@@ -6,7 +6,8 @@ const path = require('path'),
     {
         VueLoaderPlugin
     } = require('vue-loader'),
-    CopyWebpackPlugin = require('copy-webpack-plugin')
+    CopyWebpackPlugin = require('copy-webpack-plugin'),
+    webpack = require('webpack')
 
 module.exports = {
     mode: 'development',
@@ -17,7 +18,7 @@ module.exports = {
         filename: '[name].[hash].js',
         path: path.resolve(__dirname, 'dist'),
     },
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
     devServer: {
         hot: true,
         watchOptions: {
@@ -81,7 +82,10 @@ module.exports = {
             from: utils.resolve('finelets/static/img'),
             to: utils.resolve('dist/static/img'),
             toType: 'dir'
-        }])
+        }]),
+        new webpack.DefinePlugin({
+            'process.env': require('../config/dev.env')
+        }),
     ],
     optimization: {
         moduleIds: 'hashed',

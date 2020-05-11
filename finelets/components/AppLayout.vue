@@ -63,8 +63,6 @@
 </template>
 
 <script>
-import routes from '../../src/routes'
-import state from '../../src/store'
 
 export default {
   data () {
@@ -78,16 +76,16 @@ export default {
   },
   computed: {
     user () {
-      return state.getters.user
+      return this.$store.getters.user
     },
     toHome () {
       let role = 'ADMIN'
-      const user = state.getters.user
+      const user = this.$store.getters.user
       if (user && !user.isAdmin) role = user.roles
       return this.getStartRoute(role)
     },
     menu () {
-      const user = state.getters.user
+      const user = this.$store.getters.user
       return [
         {
           action: 'profile',
@@ -110,10 +108,10 @@ export default {
   },
   methods: {
     getStartRoute (role) {
-      return {name: routes.starts[role]}
+      return {name: this.$router.options.starts[role]}
     },
-    logout () {
-      state.dispatch('logout')
+    async logout () {
+      await this.$store.dispatch('logout')
     },
     async save () {
       this.errors = {}
@@ -122,7 +120,7 @@ export default {
       if (this.errors.oldPassword || this.errors.password) return
 
       try {
-        await state.dispatch('updatePwd', {id: state.getters.user.id, data: {oldPassword: this.oldPassword, password: this.password}})
+        await this.$store.dispatch('updatePwd', {id: state.getters.user.id, data: {oldPassword: this.oldPassword, password: this.password}})
         this.oldPassword = null
         this.password = null
         this.showModal = false
