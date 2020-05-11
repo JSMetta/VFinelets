@@ -1,7 +1,7 @@
 <template>
   <div class="dropdown">
     <div class="btn-group" :class="clazz">
-      <img src="/static/img/clx.jpg" width="20" height="20"
+      <img :src="imgSrc" width="20" height="20"
             class="dropdown-toggle shadow round" data-toggle="dropdown"/>
       <octicon name="triangle-down" class="text-white dropdown-toggle mt-1 ml-1"
             scale="0.8" data-toggle="dropdown"/>
@@ -27,7 +27,8 @@ export default {
     },
     direction: {
       type: String
-    }
+    },
+    imgSrc: { type: String }
   },
   computed: {
     clazz () {

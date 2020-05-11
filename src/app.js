@@ -4,8 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import '../finelets/components/global-components'
 
 import AppLayout from '../finelets/components/AppLayout.vue'
-import router from './router'
 import store from './store'
+import router from './router.js'
 import {
     sync
 } from 'vuex-router-sync'

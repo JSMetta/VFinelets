@@ -5,7 +5,8 @@ const path = require('path'),
     HtmlWebpackPlugin = require('html-webpack-plugin'),
     {
         VueLoaderPlugin
-    } = require('vue-loader')
+    } = require('vue-loader'),
+    CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
     mode: 'development',
@@ -47,26 +48,27 @@ module.exports = {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {
-                  limit: 10000,
-                  name: utils.assetsPath('img/[name].[hash:7].[ext]')
+                    limit: 10000,
+                    esModule: false,
+                    name: utils.assetsPath('img/[name].[hash:7].[ext]')
                 }
-              },
-              {
+            },
+            /* {
                 test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {
-                  limit: 10000,
-                  name: utils.assetsPath('media/[name].[hash:7].[ext]')
+                    limit: 10000,
+                    name: utils.assetsPath('media/[name].[hash:7].[ext]')
                 }
-              },
-              {
+            },
+            {
                 test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {
-                  limit: 10000,
-                  name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+                    limit: 10000,
+                    name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
                 }
-              }
+            } */
         ]
     },
     plugins: [
@@ -75,6 +77,11 @@ module.exports = {
             title: '纺织品自动化疵点检测操作系统',
             template: 'index.html'
         }),
+        new CopyWebpackPlugin([{
+            from: utils.resolve('finelets/static/img'),
+            to: utils.resolve('dist/static/img'),
+            toType: 'dir'
+        }])
     ],
     optimization: {
         moduleIds: 'hashed',

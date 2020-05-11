@@ -8,7 +8,8 @@ const path = require('path'),
     } = require('clean-webpack-plugin'),
     {
         VueLoaderPlugin
-    } = require('vue-loader')
+    } = require('vue-loader'),
+    CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
     mode: 'development',
@@ -72,6 +73,11 @@ module.exports = {
             title: '纺织品自动化疵点检测操作系统',
             template: 'index.html'
         }),
+        new CopyWebpackPlugin([{
+            from: utils.resolve('finelets/static/img'),
+            to: utils.resolve('dist/static/img'),
+            toType: 'dir'
+        }])
     ],
     optimization: {
         runtimeChunk: 'single'

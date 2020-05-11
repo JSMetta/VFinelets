@@ -2,18 +2,20 @@
   <div>
     <header class="navbar navbar-expand-lg fixed-top Header">
       <router-link class="navbar-brand" :to="toHome">
-            <img src="/static/img/jsmetta.jpg" width="30" height="30" class="rounded-circle"/>
+            <img src="../static/img/jsmetta.jpg" width="30" height="30" class="rounded-circle"/>
       </router-link>
       <div class="navbar-collapse position-relative">
         <form class="form-inline mr-auto">
           <label class="header-search-wrapper">
                 <input class="form-control form-control-sm mr-2 header-search"
                   type="search" placeholder="Search or jump to" style="width:300px">
-                <img src="/static/img/search-key-slash.svg" alt="" class="mr-2">
+                <img src="../static/img/search-key-slash.svg" alt="" class="mr-2">
           </label>
         </form>
         <div v-if="user" class="navbar-nav">
-          <dropdown-menu direction="left" :items="menu" @exit="logout" @updatePwd="showModal = true">
+          <dropdown-menu direction="left" :items="menu" 
+          :imgSrc="menuIcon"
+          @exit="logout" @updatePwd="showModal = true">
           </dropdown-menu>
         </div>
       </div>
@@ -63,6 +65,7 @@
 <script>
 import routes from '../../src/routes'
 import state from '../../src/store'
+import dropdownMenuIcon from '../static/img/clx.jpg'
 
 export default {
   data () {
@@ -75,6 +78,9 @@ export default {
     return obj
   },
   computed: {
+    menuIcon () {
+      return dropdownMenuIcon
+    },
     user () {
       return state.getters.user
     },
