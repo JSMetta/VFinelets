@@ -14,7 +14,7 @@
         </form>
         <div v-if="user" class="navbar-nav">
           <dropdown-menu direction="left" :items="menu" 
-          :imgSrc="menuIcon"
+          :img="require('../static/img/clx.jpg')"
           @exit="logout" @updatePwd="showModal = true">
           </dropdown-menu>
         </div>
@@ -65,7 +65,6 @@
 <script>
 import routes from '../../src/routes'
 import state from '../../src/store'
-import dropdownMenuIcon from '../static/img/clx.jpg'
 
 export default {
   data () {
@@ -78,9 +77,6 @@ export default {
     return obj
   },
   computed: {
-    menuIcon () {
-      return dropdownMenuIcon
-    },
     user () {
       return state.getters.user
     },
