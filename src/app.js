@@ -1,7 +1,23 @@
 import Vue from 'vue'
-import App from './App.vue'
-import './app.styl'
+import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import '../finelets/components/global-components'
 
-new Vue({
-    ...App
-}).$mount('#app')
+import AppLayout from '../finelets/components/AppLayout.vue'
+import router from './router'
+import store from './store'
+import {
+    sync
+} from 'vuex-router-sync'
+
+sync(store, router)
+
+async function main() {
+    new Vue({
+        ...AppLayout,
+        router,
+        store
+    }).$mount('#app')
+}
+
+main()
