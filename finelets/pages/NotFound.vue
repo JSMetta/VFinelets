@@ -7,7 +7,7 @@
             <br> Check your spelling or click below to return to the homepage.
         </p>
         <div class="actions">
-            <router-link tag="button" :to="{name: 'home'}">Return to home
+            <router-link tag="button" to="login">Login
             </router-link>
         </div>
     </main>
