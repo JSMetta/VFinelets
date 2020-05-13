@@ -1,3 +1,4 @@
+import Home from './pages/home.vue'
 import DevHome from './pages/dev/Home.vue'
 import Instructions from './pages/dev/Instructions.vue'
 import RunProgram from './pages/dev/RunProgram.vue'
@@ -18,7 +19,7 @@ const routes = [
   },
   {
     path: '/dev/home',
-    name: 'home',
+    name: 'devHome',
     meta: {
       role: ROLE_DEV
     },
@@ -40,11 +41,17 @@ const routes = [
     },
     component: OprHome
   },
+  {
+    path: '/',
+    name: 'home',
+    meta: {public: true},
+    component: Home
+  }
 ]
 
 const starts = {
   OPR: 'oprHome',
-  DEV: 'home'
+  DEV: 'devHome'
 }
 
 export default {
