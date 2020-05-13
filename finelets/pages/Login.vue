@@ -79,11 +79,20 @@ export default {
     }
   },
   methods: {
-    // ...mapActions(['login', 'logout']),
-
     async handleLogin () {
-      // await this.login({username: this.username, password: this.password})
-      await this.$store.dispatch('login', {username: this.username, password: this.password})
+      const store = this.$store
+      const session = await store.dispatch('login', {username: this.username, password: this.password})
+      console.log(JSON.stringify(session, null, 2))
+      if (session) {
+        store.commit('token', session.token)
+        store.commit('user', session.user)
+        let path = this.$router.currentRoute.params.wantedRoute || {
+          name: 'home'
+        }
+        if (session.user.isAdmin) path = {name: 'admin'}
+
+        this.$router.replace(path)
+      }
     },
     async handleLogout () {
       this.logout()

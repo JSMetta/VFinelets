@@ -13,16 +13,7 @@ const actions = {
   async login ({commit}, data) {
     try {
       const session = await $login(data)
-      if (session) {
-        commit('token', session.token)
-        commit('user', session.user)
-        let path = router.currentRoute.params.wantedRoute || {
-          name: 'home'
-        }
-        if (session.user.isAdmin) path = {name: 'admin'}
-
-        router.replace(path)
-      }
+      return session
     } catch (e) {
       // do nothing
     }
@@ -33,14 +24,6 @@ const actions = {
   }) {
     commit('token', null)
     commit('user', null)
-    if (router.currentRoute.matched.some(r => !r.meta.public)) {
-      router.replace({
-        name: 'login',
-        params: {
-          wantedRoute: router.currentRoute.fullPath
-        }
-      })
-    }
   },
 
   async registerUser ({getters}, data) {

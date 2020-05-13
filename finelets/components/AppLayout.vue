@@ -112,6 +112,14 @@ export default {
     },
     async logout () {
       await this.$store.dispatch('logout')
+      if (this.$router.currentRoute.matched.some(r => !r.meta.public)) {
+        this.$router.replace({
+          name: 'login',
+          params: {
+            wantedRoute: this.$router.currentRoute.fullPath
+          }
+        })
+      }
     },
     async save () {
       this.errors = {}
