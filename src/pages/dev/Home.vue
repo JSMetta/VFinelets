@@ -40,6 +40,7 @@ import MasterDetails from '../../../finelets/components/MasterDetails/MasterDeta
 import FiltersForm from '../../../finelets/components/FiltersForm.vue'
 import ItemList from '../../../finelets/components/ItemList.vue'
 import _ from 'lodash'
+import userPic from '../../../finelets/static/img/clx.jpg'
 
 const ROUTE_NAME = 'devHome'
 
@@ -69,7 +70,7 @@ export default {
       }
       return {
         editable: true,
-        logo: user.pic ? user.pic : '/static/img/clx.jpg',
+        logo: user.pic ? user.pic : userPic,
         title: user.name,
         email: user.email,
         items: [
