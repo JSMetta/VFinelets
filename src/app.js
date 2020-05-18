@@ -16,11 +16,16 @@ import createBeforeEachRoute from '../finelets/BeforeEachRoute'
 import createRouter from '../finelets/Router.js'
 import routes from './routes.js'
 import VueFetch from '../finelets/plugins/fetch'
+import * as filters from '../finelets/filters'
 
 async function main() {
     const BeforeEachRoute = createBeforeEachRoute(store, routes.starts)
     const router = createRouter(BeforeEachRoute, routes)
     sync(store, router)
+
+    for (const key in filters) {
+        Vue.filter(key, filters[key])
+    }
 
     // Install BootstrapVue
     Vue.use(BootstrapVue)
