@@ -14,7 +14,7 @@ const path = require('path'),
 module.exports = {
     mode: 'development',
     entry: {
-        app: './src/app.js'
+        app: './finelets/app.js'
     },
     output: {
         filename: '[name].[contenthash].js',
@@ -46,7 +46,7 @@ module.exports = {
                 options: {
                     limit: 10000,
                     esModule: false,
-                    name: utils.assetsPath('img/[name].[hash:7].[ext]')
+                    name: utils.resolve('img/[name].[hash:7].[ext]')
                 }
             },
             {
@@ -54,7 +54,7 @@ module.exports = {
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    name: utils.assetsPath('media/[name].[hash:7].[ext]')
+                    name: utils.resolve('media/[name].[hash:7].[ext]')
                 }
             },
             {
@@ -62,7 +62,7 @@ module.exports = {
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+                    name: utils.resolve('fonts/[name].[hash:7].[ext]')
                 }
             }
         ]

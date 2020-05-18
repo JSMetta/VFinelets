@@ -12,7 +12,7 @@ const path = require('path'),
 module.exports = {
     mode: 'development',
     entry: {
-        app: './finelets/app.js'    // './src/app.js'
+        app: './finelets/app.js'
     },
     output: {
         filename: '[name].[hash].js',
