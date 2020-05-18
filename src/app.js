@@ -5,6 +5,9 @@ import {
 
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+
 import '../finelets/components/global-components'
 
 import AppLayout from '../finelets/components/AppLayout.vue'
@@ -18,6 +21,11 @@ async function main() {
     const BeforeEachRoute = createBeforeEachRoute(store, routes.starts)
     const router = createRouter(BeforeEachRoute, routes)
     sync(store, router)
+
+    // Install BootstrapVue
+    Vue.use(BootstrapVue)
+    // Optionally install the BootstrapVue icon components plugin
+    Vue.use(IconsPlugin)
 
     const baseUrl = process.env.BASE_URL + '/' + process.env.APP_NAME
     Vue.use(VueFetch, {

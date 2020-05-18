@@ -7,6 +7,7 @@ import ValidateError from './ValidateError.vue'
 import Tabpage from './Tabpage.vue'
 import Octicon from 'vue-octicon/components/Octicon.vue'
 import 'vue-octicon/icons'
+import VueMaterialIcon from 'vue-material-icon'
 import Modal from './Modal.vue'
 
 import FormInput from './form/Input.vue'
@@ -22,3 +23,4 @@ Vue.component('Tabpage', Tabpage)
 Vue.component('Modal', Modal)
 Vue.component('FormInput', FormInput)
 Vue.component('FormTextArea', FormTextArea)
+Vue.component(VueMaterialIcon.name, VueMaterialIcon)
