@@ -16,8 +16,7 @@ const vuexLocalStorage = new VuexPersist({
   // Function that passes a mutation and lets you decide if it should update the state in localStorage.
   // filter: mutation => (true)
 })
-const __items = ['entry', 'token', 'user', 'selectedProgram', 'selectedUser'
-]
+const __items = ['entry', 'token', 'user', 'selectedUser']
 
 function createGetters (items) {
   const obj = {}
