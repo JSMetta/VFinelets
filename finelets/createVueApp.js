@@ -8,19 +8,22 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
-import '../finelets/components/global-components'
+import './components/global-components'
 
-import AppLayout from '../finelets/components/AppLayout.vue'
-import store from './store'
-import createBeforeEachRoute from '../finelets/BeforeEachRoute'
-import createRouter from '../finelets/Router.js'
-import routes from './routes.js'
-import VueFetch from '../finelets/plugins/fetch'
-import * as filters from '../finelets/filters'
+import AppLayout from './components/AppLayout.vue'
+import createStore from './store/CreateStore'
+import createBeforeEachRoute from './BeforeEachRoute'
+import createRouter from './Router.js'
+import VueFetch from './plugins/fetch'
+import * as filters from './filters'
 
-async function main() {
-    const BeforeEachRoute = createBeforeEachRoute(store, routes.starts)
-    const router = createRouter(BeforeEachRoute, routes)
+async function createVueApp(config) {
+    config = config || {}
+    if(!config.store) config.store = require('../src/store').default
+    if(!config.routes) config.routes = require('../src/routes').default
+    const store = createStore(config.store)
+    const BeforeEachRoute = createBeforeEachRoute(store, config.routes.starts)
+    const router = createRouter(BeforeEachRoute, config.routes)
     sync(store, router)
 
     for (const key in filters) {
@@ -53,4 +56,4 @@ async function main() {
     }).$mount('#app')
 }
 
-main()
+export default createVueApp
