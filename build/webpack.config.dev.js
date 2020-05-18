@@ -51,7 +51,7 @@ module.exports = {
                 options: {
                     limit: 10000,
                     esModule: false,
-                    name: utils.assetsPath('img/[name].[hash:7].[ext]')
+                    name: utils.assetsPath('img/[name].[ext]')
                 }
             },
             {
@@ -80,7 +80,7 @@ module.exports = {
         }),
         new CopyWebpackPlugin([{
             from: utils.resolve('finelets/static/img'),
-            to: utils.resolve('dist/static/img'),
+            to: utils.assetsPath('img'),
             toType: 'dir'
         }]),
         new webpack.DefinePlugin({

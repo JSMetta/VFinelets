@@ -46,7 +46,7 @@ module.exports = {
                 options: {
                     limit: 10000,
                     esModule: false,
-                    name: utils.resolve('img/[name].[hash:7].[ext]')
+                    name: utils.assetsPath('img/[name].[ext]')
                 }
             },
             {
@@ -54,7 +54,7 @@ module.exports = {
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    name: utils.resolve('media/[name].[hash:7].[ext]')
+                    name: utils.assetsPath('media/[name].[hash:7].[ext]')
                 }
             },
             {
@@ -62,7 +62,7 @@ module.exports = {
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    name: utils.resolve('fonts/[name].[hash:7].[ext]')
+                    name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
                 }
             }
         ]
@@ -76,7 +76,7 @@ module.exports = {
         }),
         new CopyWebpackPlugin([{
             from: utils.resolve('finelets/static/img'),
-            to: utils.resolve('dist/static/img'),
+            to: utils.assetsPath('img'),
             toType: 'dir'
         }])
     ],
