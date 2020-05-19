@@ -9,7 +9,8 @@ const path = require('path'),
     {
         VueLoaderPlugin
     } = require('vue-loader'),
-    CopyWebpackPlugin = require('copy-webpack-plugin')
+    CopyWebpackPlugin = require('copy-webpack-plugin'),
+    webpack = require('webpack')
 
 module.exports = {
     mode: 'development',
@@ -78,7 +79,10 @@ module.exports = {
             from: utils.resolve('finelets/static/img'),
             to: utils.assetsPath('img'),
             toType: 'dir'
-        }])
+        }]),
+        new webpack.DefinePlugin({
+            'process.env': require('../config/prod.env')
+        }),
     ],
     optimization: {
         runtimeChunk: 'single'
