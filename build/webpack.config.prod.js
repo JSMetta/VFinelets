@@ -9,7 +9,6 @@ const path = require('path'),
     {
         VueLoaderPlugin
     } = require('vue-loader'),
-    CopyWebpackPlugin = require('copy-webpack-plugin'),
     webpack = require('webpack')
 
 module.exports = {
@@ -75,11 +74,6 @@ module.exports = {
             title: '纺织品自动化疵点检测操作系统',
             template: 'index.html'
         }),
-        new CopyWebpackPlugin([{
-            from: utils.resolve('finelets/static/img'),
-            to: utils.assetsPath('img'),
-            toType: 'dir'
-        }]),
         new webpack.DefinePlugin({
             'process.env': require('../config/prod.env')
         }),
