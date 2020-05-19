@@ -69,7 +69,7 @@ module.exports = {
     },
     plugins: [
         new VueLoaderPlugin(),
-        new CleanWebpackPlugin(),
+        new CleanWebpackPlugin({cleanOnceBeforeBuildPatterns: ['./*.js', 'static/*']}),
         new HtmlWebpackPlugin({
             title: '纺织品自动化疵点检测操作系统',
             template: 'index.html'
