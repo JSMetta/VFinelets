@@ -1,7 +1,6 @@
 'use strict'
 
-const utils = require('./utils')
-const path = require('path'),
+const utils = require('./utils'),
     HtmlWebpackPlugin = require('html-webpack-plugin'),
     {
         VueLoaderPlugin
@@ -16,13 +15,15 @@ module.exports = {
     },
     output: {
         filename: '[name].js',
-        path: path.resolve(__dirname, 'dist'),
+        path: utils.resolve('dist'),
     },
     devtool: 'source-map',
     devServer: {
         hot: true,
         watchOptions: {
-            poll: true
+            // Delay the rebuild after the first change
+            aggregateTimeout: 1000,
+            poll: 1000
         }
     },
     module: {
@@ -83,6 +84,10 @@ module.exports = {
             to: utils.assetsPath('img'),
             toType: 'dir'
         }]),
+        // Ignore node_modules so CPU usage with poll watching drops significantly.
+        new webpack.WatchIgnorePlugin([
+            utils.resolve("node_modules")
+        ]),
         new webpack.DefinePlugin({
             'process.env': require('../config/dev.env')
         }),

@@ -1,7 +1,5 @@
 'use strict'
-const utils = require('./utils')
-
-const path = require('path'),
+const utils = require('./utils'),
     HtmlWebpackPlugin = require('html-webpack-plugin'),
     {
         CleanWebpackPlugin
@@ -18,7 +16,7 @@ module.exports = {
     },
     output: {
         filename: '[name].[contenthash].js',
-        path: path.resolve(__dirname, 'dist'),
+        path: utils.resolve('dist'),
     },
     module: {
         rules: [{
