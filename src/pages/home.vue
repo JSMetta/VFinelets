@@ -1,6 +1,6 @@
 <template>
   <div class="full-width center-content">
-    <h1>Here is JSM Rockstar 2.0.1</h1>
+    <h1>Welcome to JSM Rockstar 2.0.1</h1>
   </div>
 </template>
 
