@@ -12,7 +12,7 @@ const path = require('path'),
     webpack = require('webpack')
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     entry: {
         app: './finelets/app.js'
     },

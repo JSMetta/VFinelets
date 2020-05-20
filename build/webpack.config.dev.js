@@ -15,7 +15,7 @@ module.exports = {
         app: './finelets/app.js'
     },
     output: {
-        filename: '[name].[hash].js',
+        filename: '[name].js',
         path: path.resolve(__dirname, 'dist'),
     },
     devtool: 'source-map',
@@ -59,7 +59,7 @@ module.exports = {
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    name: utils.assetsPath('media/[name].[hash:7].[ext]')
+                    name: utils.assetsPath('media/[name].[ext]')
                 }
             },
             {
@@ -67,7 +67,7 @@ module.exports = {
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+                    name: utils.assetsPath('fonts/[name].[ext]')
                 }
             }
         ]
