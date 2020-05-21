@@ -165,6 +165,7 @@ export default {
     },
 
     async onRun () {
+      const state = this.$store
       try {
         let currentDoc = state.getters.selectedProgram
         const res = await state.dispatch('runSerialPortProgram', currentDoc.links.self)
@@ -210,13 +211,4 @@ export default {
     position: absolute;
     top: -500px;
   }
-
-  .blob-code-inner {
-    overflow: visible;
-    font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
-    font-size: 14px;
-    color: #24292e;
-    word-wrap: normal;
-    white-space: pre;
-}
 </style>
