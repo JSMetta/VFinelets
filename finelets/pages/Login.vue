@@ -82,7 +82,6 @@ export default {
     async handleLogin () {
       const store = this.$store
       const session = await store.dispatch('login', {username: this.username, password: this.password})
-      console.log(JSON.stringify(session, null, 2))
       if (session) {
         store.commit('token', session.token)
         store.commit('user', session.user)
