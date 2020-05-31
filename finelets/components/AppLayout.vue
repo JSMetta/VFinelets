@@ -15,7 +15,7 @@
         <div v-if="user" class="navbar-nav">
           <dropdown-menu direction="left" :items="menu" 
           :img="require('../static/img/clx.jpg')"
-          @exit="logout" @updatePwd="showModal = true">
+          @exit="logout" @profile="profile" @updatePwd="showModal = true">
           </dropdown-menu>
         </div>
       </div>
@@ -88,10 +88,14 @@ export default {
       const user = this.$store.getters.user
       return [
         {
-          action: 'profile',
-          name: user ? 'Signed in as ' + user.name : ''
+          action: 'user',
+          name: user ? user.name : '未登录'
         },
         {},
+        {
+          action: 'profile',
+          name: '个人基础资料'
+        },
         {
           action: 'updatePwd',
           name: '更改密码'
@@ -109,6 +113,9 @@ export default {
   methods: {
     getStartRoute (role) {
       return {name: this.$router.options.starts[role]}
+    },
+    profile () {
+      this.$router.push({name: 'userProfile'})
     },
     async logout () {
       await this.$store.dispatch('logout')

@@ -107,7 +107,7 @@ export async function $upload (url, formData) {
     method: 'POST',
     body: formData
   }
-  __setHeadersAuthorization(options.headers)
+  __setHeadersAuthorization(finalOptions.headers)
   const result = await fetch(finalUrl, finalOptions)
   return result
 }

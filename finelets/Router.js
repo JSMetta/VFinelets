@@ -5,6 +5,7 @@ import Signup from './pages/Signup.vue'
 import NotFound from './pages/NotFound.vue'
 import Admin from './pages/Admin.vue'
 import MasterUser from './pages/MasterUser.vue'
+import UserProfile from './pages/UserProfile.vue'
 import constDefs from './ConstantsDef'
 import mergeStartPageOfRoles from './MergeStartPageOfRoles'
 
@@ -32,6 +33,14 @@ const __routes = [
       guest: true
     },
     component: Login
+  },
+  {
+    path: '/user/profile',
+    name: 'userProfile',
+    meta: {
+      public: true
+    },
+    component: UserProfile
   },
   {
     path: '/signup',

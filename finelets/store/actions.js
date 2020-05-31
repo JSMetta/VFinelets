@@ -1,5 +1,5 @@
 import {
-  $get, $post, $login, $put, $entry, $delete
+  $get, $post, $login, $put, $entry, $delete, $upload
 } from '../plugins/fetch'
 import queryCollection from '../helpers/DealWithQueryCollection'
 
@@ -40,8 +40,13 @@ const actions = {
 
   async updatePwd (ctx, {id, data}) {
     const url = `/auth/users/${id}/password`
-    console.log('url:' + url)
     await $put(url, undefined, data)
+  },
+
+  async uploadUserPic ({getters}, formData) {
+    const id = getters.user.id
+    const url = `/auth/users/${id}/pic`
+    await $upload(url, formData)
   },
 
   async saveUserProfile ({getters, commit}, data) {
