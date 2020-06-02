@@ -4,6 +4,26 @@ import {
 import queryCollection from '../helpers/DealWithQueryCollection'
 
 const actions = {
+  fetchUserImg({getters}, url) {
+    const options = {
+      headers: {
+        Authorization: 'Bearer ' + getters.token
+      },
+      method: 'GET'
+    }
+    return fetch(url, options)
+      .then(response => {
+        return response.blob()
+      })
+      .then((myBlob) => {
+        const url = URL.createObjectURL(myBlob)
+        return url
+      })
+      .catch(err => {
+        console.log(err.message)
+      })
+  },
+
   async entry ({commit}) {
     const entry = await $entry()
     const links = queryCollection.dealWithLinkages(entry)
