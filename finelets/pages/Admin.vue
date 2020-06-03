@@ -60,8 +60,6 @@ import ItemList from '../components/ItemList.vue'
 import {createQueryString} from '../helpers/QueryHelper.js'
 import typeEnums from '../helpers/Enums.js'
 import _ from 'lodash'
-import { mapGetters, mapMutations, mapActions } from 'vuex'
-
 
 export default {
   components: {
@@ -75,15 +73,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['user']),
     master () {
-      const user = this.user
+      const user = this.$store.getters.user
       const data = {
         ...this.user
       }
       return {
-        editable: this.user.id !== '$$$$cross$$admin',
-        logo: user.pic ? user.pic : '/static/img/clx.jpg',
+        editable: user.id !== '$$$$cross$$admin',
+        logo: `http://localhost:9505/rockstar/api/pictures/${user.pic}`, // ? user.pic : '/static/img/avatar.png',
         title: user.name,
         email: user.email,
         items: [
@@ -134,15 +131,15 @@ export default {
     this.onSearchUsers({search: '', filters: ['ALL']})
   },
   methods: {
-    ...mapActions(['searchUsers', 'saveUserProfile']),
-    ...mapMutations(['selectedUser']),
+    // ...mapActions(['searchUsers', 'saveUserProfile']),
+    // ...mapMutations(['selectedUser']),
     onEditMaster () {
       this.userAttrs = {
-        ...this.user
+        ...this.$store.getters.user
       }
     },
     async onSaveMaster (data) {
-      await this.saveUserProfile(data)
+      await this.$store.dispatch('saveUserProfile', data)
     },
     getRoleTypeName (val) {
       const obj = _.find(typeEnums.roles, (role) => {
@@ -153,13 +150,13 @@ export default {
     async onSearchUsers (cond) {
       let r = createQueryString(['TYPE'], cond)
       try {
-        this.users = await this.searchUsers(r)
+        this.users = await this.$store.dispatch('searchUsers', r)
       } catch (e) {
       }
     },
 
     selectUser (data) {
-      this.selectedUser(data)
+      this.$store.commit('selectedUser', data)
       let path = {
         name: 'masterUser'
       }
