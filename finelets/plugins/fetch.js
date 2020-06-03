@@ -108,8 +108,12 @@ export async function $upload (url, formData) {
     body: formData
   }
   __setHeadersAuthorization(finalOptions.headers)
-  const result = await fetch(finalUrl, finalOptions)
-  return result
+  const response = await fetch(finalUrl, finalOptions)
+  let data
+  if (response.ok) {
+    data = await response.json()
+  }
+  return data
 }
 
 export default {

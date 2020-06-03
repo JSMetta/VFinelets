@@ -69,38 +69,11 @@ export default {
   },
   data () {
     return {
-      users: []
+      users: [],
+      master: {}
     }
   },
   computed: {
-    master () {
-      const user = this.$store.getters.user
-      const data = {
-        ...this.user
-      }
-      return {
-        editable: user.id !== '$$$$cross$$admin',
-        logo: `http://localhost:9505/rockstar/api/pictures/${user.pic}`, // ? user.pic : '/static/img/avatar.png',
-        title: user.name,
-        email: user.email,
-        items: [
-          {
-            name: 'userId',
-            icon: 'person'
-          },
-          {
-            name: 'name',
-            icon: 'note'
-          },
-          {
-            name: 'email',
-            icon: 'mail'
-          }
-        ],
-        data,
-        update: this.onSaveMaster
-      }
-    },
     tabs () {
       return [
         {
@@ -128,11 +101,39 @@ export default {
     }
   },
   async created () {
+    const user = this.$store.getters.user
+      const data = {
+        ...this.user
+      }
+      let pic
+      if(user.pic) 
+        pic = await this.$store.dispatch('userPic')
+      this.master = {
+        editable: user.id !== '$$$$cross$$admin',
+        logo: pic,
+        title: user.name,
+        email: user.email,
+        items: [
+          {
+            name: 'userId',
+            icon: 'person'
+          },
+          {
+            name: 'name',
+            icon: 'note'
+          },
+          {
+            name: 'email',
+            icon: 'mail'
+          }
+        ],
+        data,
+        update: this.onSaveMaster
+      }
+
     this.onSearchUsers({search: '', filters: ['ALL']})
   },
   methods: {
-    // ...mapActions(['searchUsers', 'saveUserProfile']),
-    // ...mapMutations(['selectedUser']),
     onEditMaster () {
       this.userAttrs = {
         ...this.$store.getters.user

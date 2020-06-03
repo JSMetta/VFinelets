@@ -4,7 +4,7 @@ import {
 import queryCollection from '../helpers/DealWithQueryCollection'
 
 const actions = {
-  fetchUserImg({getters}, url) {
+  async fetchUserImg({getters}, url) {
     const options = {
       headers: {
         Authorization: 'Bearer ' + getters.token
@@ -24,6 +24,16 @@ const actions = {
       })
   },
 
+  async userPic ({getters, dispatch}) {
+      let pic
+      if (getters.user && getters.user.pic) pic = getters.user.pic
+      let url = require('../static/img/avatar.png')
+      if (pic) {
+        url = await dispatch('fetchUserImg', `http://localhost:9505/rockstar/api/pictures/${pic}`)
+      }
+      return url
+  },
+
   async entry ({commit}) {
     const entry = await $entry()
     const links = queryCollection.dealWithLinkages(entry)
@@ -33,6 +43,10 @@ const actions = {
   async login ({commit}, data) {
     try {
       const session = await $login(data)
+      if (session) {
+        commit('token', session.token)
+        commit('user', session.user)
+      }
       return session
     } catch (e) {
       // do nothing
@@ -66,7 +80,8 @@ const actions = {
   async uploadUserPic ({getters}, formData) {
     const id = getters.user.id
     const url = `/auth/users/${id}/pic`
-    await $upload(url, formData)
+    const res = await $upload(url, formData)
+    return res
   },
 
   async saveUserProfile ({getters, commit}, data) {

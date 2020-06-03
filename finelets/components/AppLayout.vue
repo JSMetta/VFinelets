@@ -14,7 +14,7 @@
         </form>
         <div v-if="user" class="navbar-nav">
           <dropdown-menu direction="left" :items="menu" 
-          :img="require('../static/img/clx.jpg')"
+          :img="avatar"
           @exit="logout" @profile="profile" @updatePwd="showModal = true">
           </dropdown-menu>
         </div>
@@ -67,6 +67,7 @@
 export default {
   data () {
     let obj = {
+      avatar: null,
       showModal: false,
       oldPassword: null,
       password: null,
@@ -109,6 +110,9 @@ export default {
     }
   },
   components: {
+  },
+  async created () {
+    this.avatar = await this.$store.dispatch('userPic')
   },
   methods: {
     getStartRoute (role) {

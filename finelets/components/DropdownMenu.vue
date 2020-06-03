@@ -28,7 +28,7 @@ export default {
     direction: {
       type: String
     },
-    img: { type: String, required: true }
+    img: { type: String }
   },
   computed: {
     clazz () {

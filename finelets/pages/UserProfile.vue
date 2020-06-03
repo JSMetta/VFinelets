@@ -92,11 +92,7 @@ export default {
     }
   },
   async created () {
-    this.user = {...this.$store.getters.user}
-    const userPicUrl = `http://localhost:9505/rockstar/api/pictures/${this.user.pic}`
-    const url = await this.$store.dispatch("fetchUserImg", userPicUrl);
-    this.user.pic = url;
-    // this.user.pic = 
+    this.user.pic = await this.$store.dispatch("userPic")
   },
   methods: {
     onSelectPic () {
@@ -107,7 +103,8 @@ export default {
       const formData = new FormData()
       formData.append('file', this.userPicToUpload)
       const result = await this.$store.dispatch('uploadUserPic', formData)
-      console.log(result)
+      const url = await this.$store.dispatch("fetchUserImg", result.href);
+      this.user.pic = url
     },
     removePic () {
       alert('cccccccccccccc')

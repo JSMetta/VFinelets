@@ -2,18 +2,18 @@
   <div class="mx-auto w-75">
     <div class="row mt-4 justify-content-center">
       <div class="col-3 d-flex flex-column">
-        <img :src="master.logo" height="240px"/>
+        <img :src="finalMaster.logo" height="240px"/>
         <h1 class="vcard-names mt-3">
-          <span class="vcard-fullname d-block">{{master.title}}</span>
-          <span v-if="master.subtitle" class="vcard-subname d-block">{{master.subtitle}}</span>
+          <span class="vcard-fullname d-block">{{finalMaster.title}}</span>
+          <span v-if="finalMaster.subtitle" class="vcard-subname d-block">{{finalMaster.subtitle}}</span>
         </h1>
-        <div v-if="master.email" class="d-inline text-truncate font-weight-light">
+        <div v-if="finalMaster.email" class="d-inline text-truncate font-weight-light">
           <octicon name="mail" />
-          <small>{{master.email}}</small>
+          <small>{{finalMaster.email}}</small>
         </div>
-        <div v-if="master.editable || master.visible" class="position-relative" :class="collapse" id="masterform">
+        <div v-if="finalMaster.editable || finalMaster.visible" class="position-relative" :class="collapse" id="masterform">
             <div>
-              <div v-for="(item, index) in master.items" :key="index">
+              <div v-for="(item, index) in finalMaster.items" :key="index">
                 <input-text v-if="!item.type || item.type=='text' || item.type == 'number'" :type = "item.type || 'text'" class="mt-2" :icon="item.icon"
                             v-model="masterAttrs[item.name]" :readonly="isMasterItemReadonly(item)"/>
                 <radio v-else-if="item.type=='radio'" class="mt-2" :icon="item.icon" :options="item.options"
@@ -32,7 +32,7 @@
               <button type="button" class="btn btn-light btn-cancel btn-sm border-1 ml-2" @click="onSave()">取消</button>
           </div>
         </div>
-        <button v-if="master.editable || master.visible" type="button" class="btn border-secondary bg-light mt-3 p-0"
+        <button v-if="finalMaster.editable || finalMaster.visible" type="button" class="btn border-secondary bg-light mt-3 p-0"
           data-toggle="collapse" data-target="#masterform" @click="onEdit">
           详情
         </button>
@@ -54,8 +54,7 @@ export default {
   },
   props: {
     master: {
-      type: Object,
-      required: true
+      type: Object
     }
   },
   data () {
@@ -65,6 +64,16 @@ export default {
     }
   },
   computed: {
+    finalMaster () {
+      return this.master && this.master.logo ? this.master :  {
+          logo: require('../../static/img/avatar.png')
+        }
+    },
+    /* masterLogo () {
+        let logo = require('../../static/img/avatar.png')
+        if (this.master && this.master.logo) logo = this.master.logo
+        return logo  
+    }, */
     collapse () {
       let collapse = this.showmaster ? 'collapse.show' : 'collapse'
       return collapse

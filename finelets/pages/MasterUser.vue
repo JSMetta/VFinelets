@@ -21,7 +21,6 @@
 
 <script>
 
-import state from '../../src/store'
 import enums from '../helpers/Enums.js'
 import MasterDetails from '../components/MasterDetails/MasterDetails.vue'
 import FiltersForm from '../components/FiltersForm.vue'
@@ -35,16 +34,33 @@ export default {
     // FiltersForm,
     ItemList
   },
+  data () {
+    return {
+      master: null
+    }
+  },
   computed: {
-    master () {
-      const user = state.getters.selectedUser.data
+    tabs () {
+      return [
+        {
+          id: 'overview',
+          title: '概要'
+        }
+      ]
+    }
+  },
+  async created () {
+    const user = this.$store.getters.selectedUser.data
       const data = {...user}
       if (!data.inUse) data.roles = ''
       if (data.isAdmin) data.roles = ROLE_NAME_ADMIN
 
-      return {
+      let pic
+      if(user.pic) 
+        pic = await this.$store.dispatch('fetchUserImg', user.pic)
+      const master = {
         editable: true,
-        logo: user.pic ? user.pic : '/static/img/clx.jpg',
+        logo: pic,
         title: user.name,
         subtitle: user.userId,
         email: user.email,
@@ -63,27 +79,17 @@ export default {
         data,
         update: this.onSaveMaster
       }
-    },
-    tabs () {
-      return [
-        {
-          id: 'overview',
-          title: '概要'
-        }
-      ]
-    }
-  },
-  async created () {
+      this.master = master
   },
   methods: {
     async onSaveMaster (data) {
-      const url = state.getters.selectedUser.links.authorize
-      const selfUrl = state.getters.selectedUser.links.self
+      const url = this.$store.getters.selectedUser.links.authorize
+      const selfUrl = this.$store.getters.selectedUser.links.self
       const toSave = {__v: data.__v}
       if (data.roles === ROLE_NAME_ADMIN) toSave.isAdmin = true
       if (data.roles !== '') toSave.roles = data.roles
 
-      state.dispatch('authToUser', {selfUrl, url, data: toSave})
+      await this.$store.dispatch('authToUser', {selfUrl, url, data: toSave})
     },
     async onPageChanged (page) {
     }
