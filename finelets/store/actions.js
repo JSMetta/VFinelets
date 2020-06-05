@@ -3,7 +3,7 @@ import {
 } from '../plugins/fetch'
 import queryCollection from '../helpers/DealWithQueryCollection'
 
-const defaultAvatar = require('../static/img/avatar.png')
+// const defaultAvatar = require('../static/img/avatar.png')
 
 const actions = {
   async fetchUserImg({getters}, url) {
@@ -26,28 +26,22 @@ const actions = {
       })
   },
 
-  async userPic ({getters, dispatch}) {
-      let pic
-      if (getters.user && getters.user.pic) pic = getters.user.pic
-      let url = defaultAvatar
-      if (pic) {
-        url = await dispatch('fetchUserImg', `http://localhost:9505/rockstar/api/pictures/${pic}`)
-      }
-      return url
-  },
-
   async entry ({commit}) {
     const entry = await $entry()
     const links = queryCollection.dealWithLinkages(entry)
     commit('entry', links)
   },
 
-  async login ({commit}, data) {
+  async login ({commit, dispatch}, data) {
     try {
       const session = await $login(data)
       if (session) {
         commit('token', session.token)
         commit('user', session.user)
+        if(session.user.pic) {
+          const avatar = await dispatch('fetchUserImg', `http://localhost:9505/rockstar/api/pictures/${session.user.pic}`)
+          commit('avatar', avatar)
+        }
       }
       return session
     } catch (e) {
@@ -60,6 +54,7 @@ const actions = {
   }) {
     commit('token', null)
     commit('user', null)
+    commit('avatar', null)
   },
 
   async registerUser ({getters}, data) {

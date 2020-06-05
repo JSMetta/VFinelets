@@ -8,20 +8,12 @@
 <script>
 
 export default {
-  name: "home",
   data() {
     return {
-      pic: null
-    };
-  },
-  computed: {
-  },
-  async created() {
-    this.pic = await this.$store.dispatch('userPic')
-  },
-  methods: {
+      pic: this.$store.getters.avatar
+    }
   }
-};
+}
 </script>
 
 <style lang="stylus" scoped>

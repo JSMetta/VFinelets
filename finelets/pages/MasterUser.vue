@@ -22,6 +22,7 @@
 <script>
 
 import enums from '../helpers/Enums.js'
+import constDef from '../ConstantsDef.js'
 import MasterDetails from '../components/MasterDetails/MasterDetails.vue'
 import FiltersForm from '../components/FiltersForm.vue'
 import ItemList from '../components/ItemList.vue'
@@ -35,32 +36,14 @@ export default {
     ItemList
   },
   data () {
-    return {
-      master: null
-    }
-  },
-  computed: {
-    tabs () {
-      return [
-        {
-          id: 'overview',
-          title: '概要'
-        }
-      ]
-    }
-  },
-  async created () {
     const user = this.$store.getters.selectedUser.data
       const data = {...user}
       if (!data.inUse) data.roles = ''
       if (data.isAdmin) data.roles = ROLE_NAME_ADMIN
 
-      let pic
-      if(user.pic) 
-        pic = await this.$store.dispatch('fetchUserImg', user.pic)
       const master = {
         editable: true,
-        logo: pic,
+        avatar: constDef.DEFAULT_IMG_AVATAR,
         title: user.name,
         subtitle: user.userId,
         email: user.email,
@@ -79,7 +62,22 @@ export default {
         data,
         update: this.onSaveMaster
       }
-      this.master = master
+    return { master }
+  },
+  computed: {
+    tabs () {
+      return [
+        {
+          id: 'overview',
+          title: '概要'
+        }
+      ]
+    }
+  },
+  async created () {
+    const user = this.$store.getters.selectedUser.data
+    if(user.pic) 
+        this.master.avatar = await this.$store.dispatch('fetchUserImg', user.pic)
   },
   methods: {
     async onSaveMaster (data) {

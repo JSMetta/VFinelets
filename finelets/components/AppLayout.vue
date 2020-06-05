@@ -88,7 +88,6 @@
 export default {
   data() {
     let obj = {
-      avatar: null,
       showModal: false,
       oldPassword: null,
       password: null,
@@ -97,6 +96,9 @@ export default {
     return obj;
   },
   computed: {
+    avatar() {
+      return this.$store.getters.avatar
+    },
     user() {
       return this.$store.getters.user;
     },
@@ -130,21 +132,20 @@ export default {
       ];
     }
   },
-  async created() {
-    this.avatar = await this.$store.dispatch('userPic')
+  /* created() {
     this.$store.watch(
       state => {
-        return this.$store.state.user
+        return this.$store.state.avatar
       },
-      async (newValue, oldValue) => {
-        this.avatar = await this.$store.dispatch('userPic')
+      (newValue, oldValue) => {
+        this.avatar = this.$store.getters.avatar
       },
       //Optional Deep if you need it
       {
         deep: true
       }
     )
-  },
+  }, */
   methods: {
     getStartRoute(role) {
       return { name: this.$router.options.starts[role] };

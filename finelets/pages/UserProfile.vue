@@ -78,7 +78,7 @@ export default {
     const user = {...this.$store.getters.user}
     return {
       user,
-      avatar: null,
+      avatar: this.$store.getters.avatar,
       userPicToUpload: '',
       errors: {}
     }
@@ -87,9 +87,6 @@ export default {
     isReadOnly () {
       return true
     }
-  },
-  async created () {
-    this.avatar = await this.$store.dispatch("userPic")
   },
   methods: {
     onSelectPic () {
@@ -102,6 +99,7 @@ export default {
       const result = await this.$store.dispatch('uploadUserPic', formData)
       const url = await this.$store.dispatch("fetchUserImg", result.href);
       this.avatar = url
+      this.$store.commit('avatar', url)
     },
     removePic () {
       alert('cccccccccccccc')
