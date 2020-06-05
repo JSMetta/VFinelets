@@ -1,4 +1,4 @@
-import constDefs from './ConstantsDef'
+import constDefs from './ConstantsDef.js'
 import mergeStartPageOfRoles from './MergeStartPageOfRoles'
 
 

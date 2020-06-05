@@ -52,7 +52,7 @@
       <div class="col mt-4">
         <summary class="position-absolute m-0" data-toggle="dropdown">
           <!-- <img class="rounded-3" src="../static/img/clx.jpg" height="260px"/> -->
-          <img class="rounded-3" :src="user.pic" height="260px"/>
+          <img class="rounded-3" :src="avatar" height="260px"/>
           <div class="position-absolute bg-gray-dark rounded-2 text-white px-2 py-2 ml-2 mb-2 bottom-0">
               <octicon class="mr-2" name="pencil"/>Edit
           </div>
@@ -75,13 +75,10 @@
 <script>
 export default {
   data () {
+    const user = {...this.$store.getters.user}
     return {
-      user: {
-        userId: null,
-        name: null,
-        email: null,
-        pic: null
-      },
+      user,
+      avatar: null,
       userPicToUpload: '',
       errors: {}
     }
@@ -92,7 +89,7 @@ export default {
     }
   },
   async created () {
-    this.user.pic = await this.$store.dispatch("userPic")
+    this.avatar = await this.$store.dispatch("userPic")
   },
   methods: {
     onSelectPic () {
@@ -104,7 +101,7 @@ export default {
       formData.append('file', this.userPicToUpload)
       const result = await this.$store.dispatch('uploadUserPic', formData)
       const url = await this.$store.dispatch("fetchUserImg", result.href);
-      this.user.pic = url
+      this.avatar = url
     },
     removePic () {
       alert('cccccccccccccc')
