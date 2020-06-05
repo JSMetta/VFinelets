@@ -88,11 +88,8 @@ export default {
         this.$router.replace(path)
       }
     },
-    async handleLogout () {
+    handleLogout () {
       this.logout()
-    },
-    async isLoggedIn () {
-      // return isLoggedIn();
     }
   }
 }

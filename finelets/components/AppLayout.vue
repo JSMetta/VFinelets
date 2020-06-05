@@ -13,7 +13,7 @@
           </label>
         </form>
         <div v-if="user" class="navbar-nav">
-          <dropdown-menu direction="left" :items="menu" 
+          <dropdown-menu direction="left" :items="menu"
           :img="avatar"
           @exit="logout" @profile="profile" @updatePwd="showModal = true">
           </dropdown-menu>
@@ -108,8 +108,6 @@ export default {
         }
       ]
     }
-  },
-  components: {
   },
   async created () {
     this.avatar = await this.$store.dispatch('userPic')

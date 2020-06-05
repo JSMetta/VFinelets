@@ -3,6 +3,8 @@ import {
 } from '../plugins/fetch'
 import queryCollection from '../helpers/DealWithQueryCollection'
 
+const defaultAvatar = require('../static/img/avatar.png')
+
 const actions = {
   async fetchUserImg({getters}, url) {
     const options = {
@@ -27,7 +29,7 @@ const actions = {
   async userPic ({getters, dispatch}) {
       let pic
       if (getters.user && getters.user.pic) pic = getters.user.pic
-      let url = require('../static/img/avatar.png')
+      let url = defaultAvatar
       if (pic) {
         url = await dispatch('fetchUserImg', `http://localhost:9505/rockstar/api/pictures/${pic}`)
       }
