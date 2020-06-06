@@ -182,13 +182,6 @@ export default {
       } catch (e) {}
     },
 
-    /* async onLoadLogs () {
-      try {
-        const res = await state.dispatch('loadProgramLogs', this.logHref)
-        this.logs = res.Process.logs
-      } catch (e) {}
-    }, */
-
     async uploadProgram () {
       this.programToUpload = this.$refs.program.files[0]
       this.obj.prog = await this.programToUpload.text()
