@@ -6,7 +6,7 @@ import queryCollection from '../helpers/DealWithQueryCollection'
 // const defaultAvatar = require('../static/img/avatar.png')
 
 const actions = {
-  async fetchUserImg({getters}, url) {
+  async fetchAsset({getters}, url) {
     const options = {
       headers: {
         Authorization: 'Bearer ' + getters.token
@@ -39,7 +39,7 @@ const actions = {
         commit('token', session.token)
         commit('user', session.user)
         if(session.user.pic) {
-          const avatar = await dispatch('fetchUserImg', `http://localhost:9505/rockstar/api/pictures/${session.user.pic}`)
+          const avatar = await dispatch('fetchAsset', `http://localhost:9505/rockstar/api/pictures/${session.user.pic}`)
           commit('avatar', avatar)
         }
       }
@@ -74,10 +74,20 @@ const actions = {
     await $put(url, undefined, data)
   },
 
-  async uploadUserPic ({getters}, formData) {
+  async uploadUserPic ({getters, commit, dispatch}, formData) {
     const id = getters.user.id
-    const url = `/auth/users/${id}/pic`
-    const res = await $upload(url, formData)
+    const url = `/users/${id}/pic`
+    const result = await $upload(url, formData)
+    const avatar = await dispatch("fetchAsset", result.href);
+    commit('avatar', avatar)
+    return result
+  },
+
+  async removeUserPic ({getters, commit}) {
+    const id = getters.user.id
+    const url = `/users/${id}/pic`
+    const res = await $delete(url)
+    commit('avatar', null)
     return res
   },
 

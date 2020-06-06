@@ -132,20 +132,6 @@ export default {
       ];
     }
   },
-  /* created() {
-    this.$store.watch(
-      state => {
-        return this.$store.state.avatar
-      },
-      (newValue, oldValue) => {
-        this.avatar = this.$store.getters.avatar
-      },
-      //Optional Deep if you need it
-      {
-        deep: true
-      }
-    )
-  }, */
   methods: {
     getStartRoute(role) {
       return { name: this.$router.options.starts[role] };

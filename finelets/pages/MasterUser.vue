@@ -77,7 +77,7 @@ export default {
   async created () {
     const user = this.$store.getters.selectedUser.data
     if(user.pic) 
-        this.master.avatar = await this.$store.dispatch('fetchUserImg', user.pic)
+        this.master.avatar = await this.$store.dispatch('fetchAsset', user.pic)
   },
   methods: {
     async onSaveMaster (data) {

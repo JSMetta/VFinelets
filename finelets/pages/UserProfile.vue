@@ -88,6 +88,20 @@ export default {
       return true
     }
   },
+  created() {
+    this.$store.watch(
+      state => {
+        return this.$store.state.avatar
+      },
+      (newValue, oldValue) => {
+        this.avatar = this.$store.getters.avatar
+      },
+      //Optional Deep if you need it
+      {
+        deep: true
+      }
+    )
+  },
   methods: {
     onSelectPic () {
       this.$refs.userPic.click()
@@ -97,12 +111,9 @@ export default {
       const formData = new FormData()
       formData.append('file', this.userPicToUpload)
       const result = await this.$store.dispatch('uploadUserPic', formData)
-      const url = await this.$store.dispatch("fetchUserImg", result.href);
-      this.avatar = url
-      this.$store.commit('avatar', url)
     },
-    removePic () {
-      alert('cccccccccccccc')
+    async removePic () {
+      const result = await this.$store.dispatch('removeUserPic')
     },
     cancel () {
     },
