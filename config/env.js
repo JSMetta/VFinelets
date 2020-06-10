@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = {
-  APP_NAME: '"Rockstar"',
-  BASE_URL: '"http://localhost:9505"',
-  LOGIN_PAGE_TITLE: '"JSMetta RockStar"'
+  APP_NAME: '"Textrade"',
+  BASE_URL: '"http://localhost:9501"',
+  LOGIN_PAGE_TITLE: '"Hotex Textrade"'
 }
