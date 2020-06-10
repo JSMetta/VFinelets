@@ -5,11 +5,13 @@ const utils = require('./utils'),
         VueLoaderPlugin
     } = require('vue-loader'),
     webpack = require('webpack'),
+    commonEnv = require('../config/env'),
     devConfig = require('./webpack.config.dev'),
     prodConfig = require('./webpack.config.prod')
 
 const createCommonConfig = mode => {
     const envPath = `../config/${mode}.env`
+    const env = {...commonEnv, ...require(envPath)}
     return merge([{
         entry: {
             app: './finelets/app.js'
@@ -72,7 +74,7 @@ const createCommonConfig = mode => {
                 template: 'index.html'
             }),
             new webpack.DefinePlugin({
-                'process.env': require(envPath)
+                'process.env': env
             }),
         ],
     }, ])

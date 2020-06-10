@@ -2,7 +2,7 @@
   <div class="mx-auto w-25">
     <div class="d-flex flex-column">
         <div class="d-flex mt-4">
-          <h3>欢迎加入 JSMetta RockStar</h3>
+          <h3>欢迎加入 {{appName}}</h3>
         </div>
         <div class="d-flex mt-4">
             <p class="text-secondary" style="font-size:18px">创建您的个人账户</p>
@@ -63,6 +63,7 @@ import _ from 'lodash'
 export default {
   data () {
     return {
+      appName: process.env.LOGIN_PAGE_TITLE || 'You may define title in env LOGIN_PAGE_TITLE',
       user: {
         userId: null,
         name: null,

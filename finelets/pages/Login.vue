@@ -7,7 +7,7 @@
       />
     </div>
     <div class="row justify-content-center mt-3">
-      <h4>JSMetta RockStar</h4>
+      <h4>{{title}}</h4>
     </div>
     <div class="row justify-content-center mt-3">
       <div class="col-4 loginform pt-3 pb-3">
@@ -58,7 +58,7 @@
     <div class="row justify-content-center mt-3">
       <div class="col-4 loginform" style="height:50px">
           <p class="mx-auto mt-2" style="width:60%">
-            New to Cross?
+            New to {{appName}}?
             <router-link :to="{name: 'signup'}">
               Create an account.
             </router-link>
@@ -70,10 +70,11 @@
 </template>
 
 <script>
-// import { mapActions } from 'vuex'
 export default {
   data () {
     return {
+      title: process.env.LOGIN_PAGE_TITLE || 'You may define title in env LOGIN_PAGE_TITLE',
+      appName: process.env.APP_NAME,
       username: '',
       password: ''
     }
