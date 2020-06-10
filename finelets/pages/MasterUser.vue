@@ -94,10 +94,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.selectable:hover {
-  border-bottom: 2px solid #007bff;
-  cursor: pointer;
-}
-</style>
