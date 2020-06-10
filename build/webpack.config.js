@@ -14,7 +14,7 @@ const createCommonConfig = mode => {
     const env = {...commonEnv, ...require(envPath)}
     return merge([{
         entry: {
-            app: './finelets/app.js'
+            app: './src/app.js'
         },
         output: {
             filename: '[name].js',
