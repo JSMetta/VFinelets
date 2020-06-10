@@ -60,7 +60,6 @@
 
 <script>
 import _ from 'lodash'
-import state from '../../src/store'
 export default {
   data () {
     return {
@@ -86,7 +85,7 @@ export default {
       if (!_.isEmpty(this.errors)) return
 
       try {
-        await state.dispatch('registerUser', this.user)
+        await this.$store.dispatch('registerUser', this.user)
         this.$router.back()
       } catch (e) {
         alert('注册失败：\r\n' + e.message)
