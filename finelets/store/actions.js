@@ -1,45 +1,23 @@
 import {
-  $get, $post, $login, $put, $entry, $delete, $upload
+  $get, $post, $login, $put, $entry, $delete, $upload, $fetchAsset
 } from '../plugins/fetch'
 import queryCollection from '../helpers/DealWithQueryCollection'
 
-// const defaultAvatar = require('../static/img/avatar.png')
-
 const actions = {
-  async fetchAsset({getters}, url) {
-    const options = {
-      headers: {
-        Authorization: 'Bearer ' + getters.token
-      },
-      method: 'GET'
-    }
-    return fetch(url, options)
-      .then(response => {
-        return response.blob()
-      })
-      .then((myBlob) => {
-        const url = URL.createObjectURL(myBlob)
-        return url
-      })
-      .catch(err => {
-        console.log(err.message)
-      })
-  },
-
   async entry ({commit}) {
     const entry = await $entry()
     const links = queryCollection.dealWithLinkages(entry)
     commit('entry', links)
   },
 
-  async login ({commit, dispatch}, data) {
+  async login ({commit}, data) {
     try {
       const session = await $login(data)
       if (session) {
         commit('token', session.token)
         commit('user', session.user)
         if(session.user.pic) {
-          const avatar = await dispatch('fetchAsset', `http://localhost:9505/rockstar/api/pictures/${session.user.pic}`)
+          const avatar = await $fetchAsset(`/pictures/${session.user.pic}`)
           commit('avatar', avatar)
         }
       }
@@ -78,7 +56,7 @@ const actions = {
     const id = getters.user.id
     const url = `/users/${id}/pic`
     const result = await $upload(url, formData)
-    const avatar = await dispatch("fetchAsset", result.href);
+    const avatar = await $fetchAsset(result.href);
     commit('avatar', avatar)
     return result
   },

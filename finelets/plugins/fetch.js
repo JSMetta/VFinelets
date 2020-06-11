@@ -12,6 +12,26 @@ function __setHeadersAuthorization (headers) {
   headers.Authorization = 'Bearer ' + token
 }
 
+export async function $fetchAsset(url) {
+  const finalUrl = __getFinalUrl(url)
+  const options = {
+    headers: {},
+    method: 'GET'
+  }
+  __setHeadersAuthorization(options.headers)
+  return fetch(finalUrl, options)
+    .then(response => {
+      return response.blob()
+    })
+    .then((blob) => {
+      const asset = URL.createObjectURL(blob)
+      return asset
+    })
+    .catch(err => {
+      console.log(err.message)
+    })
+}
+
 async function __fetch (url, options) {
   const response = await fetch(url, options)
   if (response.ok) {

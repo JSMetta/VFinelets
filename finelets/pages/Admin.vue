@@ -64,12 +64,11 @@
 </template>
 
 <script>
-import MasterDetails from "../components/MasterDetails/MasterDetails.vue";
-import FiltersForm from "../components/FiltersForm.vue";
-import ItemList from "../components/ItemList.vue";
-import { createQueryString } from "../helpers/QueryHelper.js";
-import typeEnums from "../helpers/Enums.js";
-import _ from "lodash";
+import MasterDetails from "../components/MasterDetails/MasterDetails.vue"
+import FiltersForm from "../components/FiltersForm.vue"
+import ItemList from "../components/ItemList.vue"
+import { createQueryString } from "../helpers/QueryHelper.js"
+import _ from "lodash"
 
 export default {
   components: {
@@ -149,7 +148,8 @@ export default {
       await this.$store.dispatch("saveUserProfile", data);
     },
     getRoleTypeName(val) {
-      const obj = _.find(typeEnums.roles, role => {
+      const enumRoles = this.$store.getters.app.roles
+      const obj = _.find(enumRoles, role => {
         return role.value === val;
       });
       return obj ? obj.name : undefined;

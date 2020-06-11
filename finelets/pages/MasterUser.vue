@@ -22,6 +22,7 @@
 <script>
 
 import constDef from '../ConstantsDef.js'
+import {$fetchAsset} from '../plugins/fetch'
 import MasterDetails from '../components/MasterDetails/MasterDetails.vue'
 import FiltersForm from '../components/FiltersForm.vue'
 import ItemList from '../components/ItemList.vue'
@@ -76,7 +77,7 @@ export default {
   async created () {
     const user = this.$store.getters.selectedUser.data
     if(user.pic) 
-        this.master.avatar = await this.$store.dispatch('fetchAsset', user.pic)
+        this.master.avatar = await $fetchAsset(user.pic)
   },
   methods: {
     async onSaveMaster (data) {
