@@ -244,7 +244,7 @@ export default {
     }
   },
   async created () {
-    let tab = state.getters.currentPage(ROUTE_NAME)
+    let tab = this.$store.getters.currentPage(ROUTE_NAME)
     tab = tab || 'overview'
     this.currentTab = tab
     await this.loadPageData(tab)
