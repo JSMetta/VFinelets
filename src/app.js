@@ -2,11 +2,10 @@ import createVueApp from '../finelets/createVueApp'
 
 createVueApp({
     app: {
-        name: 'Rockstar',
-        loginPageTitle: 'JSMetta RockStar',
+        name: 'Textrade',
+        loginPageTitle: 'Hotex Textrade',
         roles: [
-            { name: '设计人员', value: 'DEV' },
-            { name: '检测员', value: 'OPR' }
+            { name: '业务员', value: 'BIZ' }
           ]
     }
 })
