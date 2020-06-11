@@ -15,7 +15,7 @@ const vuexLocalStorage = new VuexPersist({
   key: 'vuex', // The key to store the state on in the storage provider.
   storage: window.localStorage, // or window.sessionStorage or localForage
   reducer: (state) => {
-    const items = ['entry', 'token', 'user', 'avatar', 'currentPage']
+    const items = [...__items, 'currentPage']
     const result = {}
     _.forEach(items, (item) => {
       result[item] = state[item]
