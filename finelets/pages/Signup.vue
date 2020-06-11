@@ -63,7 +63,7 @@ import _ from 'lodash'
 export default {
   data () {
     return {
-      appName: process.env.LOGIN_PAGE_TITLE || 'You may define title in env LOGIN_PAGE_TITLE',
+      appName: this.$store.getters.app.loginPageTitle,
       user: {
         userId: null,
         name: null,

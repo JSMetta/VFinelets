@@ -21,7 +21,6 @@
 
 <script>
 
-import enums from '../helpers/Enums.js'
 import constDef from '../ConstantsDef.js'
 import MasterDetails from '../components/MasterDetails/MasterDetails.vue'
 import FiltersForm from '../components/FiltersForm.vue'
@@ -40,7 +39,7 @@ export default {
       const data = {...user}
       if (!data.inUse) data.roles = ''
       if (data.isAdmin) data.roles = ROLE_NAME_ADMIN
-
+      const enumRoles = this.$store.getters.app.roles
       const master = {
         editable: true,
         avatar: constDef.DEFAULT_IMG_AVATAR,
@@ -55,7 +54,7 @@ export default {
             options: [
               { name: '未授权或收回授权', value: '' },
               { name: '系统管理员', value: '@@SYSADMIN@@' },
-              ...enums.roles
+              ...enumRoles
             ]
           }
         ],

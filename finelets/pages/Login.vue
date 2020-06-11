@@ -1,10 +1,7 @@
 <template>
   <div class="jumbotron-fluid">
     <div class="row justify-content-center">
-      <img
-        src="../static/img/jsmetta.jpg"
-        class="logo rounded-circle"
-      />
+      <img src="../static/img/jsmetta.jpg" class="logo rounded-circle" />
     </div>
     <div class="row justify-content-center mt-3">
       <h4>{{title}}</h4>
@@ -12,7 +9,6 @@
     <div class="row justify-content-center mt-3">
       <div class="col-4 loginform pt-3 pb-3">
         <form @submit.prevent="handleLogin">
-
           <div class="form-row">
             <div class="form-group col-12">
               <label for="userName">用户名：</label>
@@ -24,7 +20,7 @@
                 v-model="username"
                 required
                 autofocus
-              >
+              />
             </div>
           </div>
           <div class="form-row">
@@ -37,63 +33,62 @@
                 v-model="password"
                 placeholder="Password"
                 required
-              >
+              />
             </div>
           </div>
           <div class="checkbox">
             <label>
-              <input
-                type="checkbox"
-                value="remember-me"
-              > 记住我
+              <input type="checkbox" value="remember-me" /> 记住我
             </label>
           </div>
-          <button
-            class="btn btn-success active btn-block"
-            type="submit"
-          >登录</button>
+          <button class="btn btn-success active btn-block" type="submit">登录</button>
         </form>
       </div>
     </div>
     <div class="row justify-content-center mt-3">
       <div class="col-4 loginform" style="height:50px">
-          <p class="mx-auto mt-2" style="width:60%">
-            New to {{appName}}?
-            <router-link :to="{name: 'signup'}">
-              Create an account.
-            </router-link>
-          </p>
+        <p class="mx-auto mt-2" style="width:60%">
+          New to {{appName}}?
+          <router-link :to="{name: 'signup'}">Create an account.</router-link>
+        </p>
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
 export default {
-  data () {
+  data() {
+    const app = this.$store.getters.app
+    const appName = app.name
+    const title = app.loginPageTitle
     return {
-      title: process.env.LOGIN_PAGE_TITLE || 'You may define title in env LOGIN_PAGE_TITLE',
-      appName: process.env.APP_NAME,
-      username: '',
-      password: ''
+      title,
+      appName,
+      username: "",
+      password: ""
     }
   },
   methods: {
-    async handleLogin () {
-      const store = this.$store
-      const session = await store.dispatch('login', {username: this.username, password: this.password})
+    async handleLogin() {
+      const store = this.$store;
+      const session = await store.dispatch("login", {
+        username: this.username,
+        password: this.password
+      });
       if (session) {
-        let path = this.$router.currentRoute.params.wantedRoute || { name: 'home' }
-        if (session.user.isAdmin) path = {name: 'admin'}
-        this.$router.replace(path)
+        let path = this.$router.currentRoute.params.wantedRoute || {
+          name: "home"
+        };
+        if (session.user.isAdmin) path = { name: "admin" };
+        this.$router.replace(path);
       }
     },
-    handleLogout () {
-      this.logout()
+    handleLogout() {
+      this.logout();
     }
   }
-}
+};
 </script>
 
 <style>

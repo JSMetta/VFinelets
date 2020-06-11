@@ -16,14 +16,24 @@ import createBeforeEachRoute from './BeforeEachRoute'
 import createRouter from './Router.js'
 import VueFetch from './plugins/fetch'
 import * as filters from './filters'
+import util from './helpers/util.js'
+
+function addAppStateConfig(store, app) {
+    store.getters.app = (state) => {
+        return state.app
+    }
+    store.states.app = app
+}
 
 async function createVueApp(config) {
     config = config || {}
-    if(!config.store) config.store = require('../src/store').default
-    if(!config.routes) config.routes = require('../src/routes').default
-    const store = createStore(config.store)
-    const BeforeEachRoute = createBeforeEachRoute(store, config.routes.starts)
-    const router = createRouter(BeforeEachRoute, config.routes)
+    util.assert(config.app, 'You should config app when createVueApp !')
+    const storeConfig = config.store ? config.store : require('../src/store').default
+    addAppStateConfig(storeConfig, config.app)
+    const routesConfig = config.routes ? config.routes :  require('../src/routes').default
+    const store = createStore(storeConfig)
+    const BeforeEachRoute = createBeforeEachRoute(store, routesConfig.starts)
+    const router = createRouter(BeforeEachRoute, routesConfig)
     sync(store, router)
 
     for (const key in filters) {
