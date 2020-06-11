@@ -10,7 +10,7 @@ import __states from './states'
 const __items = ['entry', 'token', 'user', 'selectedUser', 'avatar']
 
 Vue.use(Vuex)
-localStorage.clear()
+// localStorage.clear()
 const vuexLocalStorage = new VuexPersist({
   key: 'vuex', // The key to store the state on in the storage provider.
   storage: window.localStorage, // or window.sessionStorage or localForage
