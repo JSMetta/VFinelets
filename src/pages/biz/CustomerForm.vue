@@ -73,7 +73,6 @@
 </template>
 
 <script>
-import state from '../../store'
 export default {
   data () {
     return {
@@ -105,6 +104,7 @@ export default {
       if (!this.doc.name) this.errors.name = '必须输入客户名称'
       if (this.errors.code || this.errors.name) return
 
+      const state = this.$store
       let toCreate = {
         ...this.doc,
         creator: state.getters.user.id
