@@ -32,28 +32,28 @@
                 <div class="d-flex">
                   <octicon v-if="product.item.data.yarn" name="server" class="mt-1 mr-1" size="16" style="color:green"/>
                   <h6 class="font-weight-bolder">{{product.item.data.yarn}}</h6>
-                  <octicon v-if="product.item.data.spec.width" name="ellipsis" class="mt-1 mr-1 ml-3" size="16" style="color:green"/>
-                  <h6 class="font-weight-bolder mb-1" @click="navToPart(product.item)">
+                  <octicon v-if="product.item.data.spec && product.item.data.spec.width" name="ellipsis" class="mt-1 mr-1 ml-3" size="16" style="color:green"/>
+                  <h6 v-if="product.item.data.spec && product.item.data.spec.width" class="font-weight-bolder mb-1" @click="navToPart(product.item)">
                     {{product.item.data.spec.width}}
                   </h6>
-                  <octicon v-if="product.item.data.spec.dnsty" name="fold" class="mt-1 mr-1 ml-3" size="16" style="color:green"/>
-                  <h6 class="font-weight-bolder mb-1" @click="navToPart(product.item)">
+                  <octicon v-if="product.item.data.spec && product.item.data.spec.dnsty" name="fold" class="mt-1 mr-1 ml-3" size="16" style="color:green"/>
+                  <h6 v-if="product.item.data.spec && product.item.data.spec.dnsty" class="font-weight-bolder mb-1" @click="navToPart(product.item)">
                     {{product.item.data.spec.dnsty}}
                   </h6>
-                  <octicon v-if="product.item.data.spec.GSM" name="hubot" class="mt-1 mr-1 ml-3" size="16" style="color:green"/>
-                  <h6 class="font-weight-bolder mb-1 mr-auto" @click="navToPart(product.item)">
+                  <octicon v-if="product.item.data.spec && product.item.data.spec.GSM" name="hubot" class="mt-1 mr-1 ml-3" size="16" style="color:green"/>
+                  <h6 v-if="product.item.data.spec && product.item.data.spec.GSM" class="font-weight-bolder mb-1 mr-auto" @click="navToPart(product.item)">
                     {{product.item.data.spec.GSM}}
                   </h6>
-                  <octicon v-if="product.item.data.grey.width" name="ellipsis" class="mt-1 mr-1" size="16" style="color:green"/>
-                  <h6 class="font-weight-bolder mb-1" @click="navToPart(product.item)">
+                  <octicon v-if="product.item.data.grey && product.item.data.grey.width" name="ellipsis" class="mt-1 mr-1" size="16" style="color:green"/>
+                  <h6 v-if="product.item.data.grey && product.item.data.grey.width" class="font-weight-bolder mb-1" @click="navToPart(product.item)">
                     {{product.item.data.grey.width}}
                   </h6>
-                  <octicon v-if="product.item.data.grey.dnsty" name="fold" class="mt-1 mr-1 ml-3" size="16" style="color:green"/>
-                  <h6 class="font-weight-bolder mb-1" @click="navToPart(product.item)">
+                  <octicon v-if="product.item.data.grey && product.item.data.grey.dnsty" name="fold" class="mt-1 mr-1 ml-3" size="16" style="color:green"/>
+                  <h6 v-if="product.item.data.grey && product.item.data.grey.dnsty" class="font-weight-bolder mb-1" @click="navToPart(product.item)">
                     {{product.item.data.grey.dnsty}}
                   </h6>
-                  <octicon v-if="product.item.data.grey.GSM" name="hubot" class="mt-1 mr-1 ml-3" size="16" style="color:green"/>
-                  <h6 class="font-weight-bolder mb-1" @click="navToPart(product.item)">
+                  <octicon v-if="product.item.data.grey && product.item.data.grey.GSM" name="hubot" class="mt-1 mr-1 ml-3" size="16" style="color:green"/>
+                  <h6 v-if="product.item.data.grey && product.item.data.grey.GSM" class="font-weight-bolder mb-1" @click="navToPart(product.item)">
                     {{product.item.data.grey.GSM}}
                   </h6>
                 </div>

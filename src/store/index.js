@@ -4,7 +4,7 @@ import states from './states'
 import mutations from './mutations'
 import getters from './getters'
 
-const items = []
+const items = ['selectedProduct', 'selectedSupplier', 'selectedCustomer']
 
 const config = {
   items, states, getters, mutations, actions  

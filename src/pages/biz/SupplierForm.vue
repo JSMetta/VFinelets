@@ -73,7 +73,6 @@
 </template>
 
 <script>
-import state from '../../store'
 export default {
   data () {
     return {
@@ -87,11 +86,6 @@ export default {
       errors: {}
     }
   },
-  async created () {
-  },
-
-  computed: {
-  },
   methods: {
     async cancel () {
       setTimeout(() => {
@@ -100,6 +94,7 @@ export default {
     },
 
     async save () {
+      const state = this.$store
       this.errors = {}
       if (!this.doc.code) this.errors.code = '必须输入编号，且编号必须唯一'
       if (!this.doc.name) this.errors.name = '必须输入工厂名称'
