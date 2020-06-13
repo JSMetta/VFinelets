@@ -1,6 +1,6 @@
 import {$get, $post, $login, $put, $entry, $delete, $upload, $fetchAsset } from '../../finelets/plugins/fetch'
-import queryCollection from '../../finelets/helpers/DealWithQueryCollection'
-import {dealWithCollection} from '../../finelets/helpers/DealWithQueryCollection'
+// import queryCollection from '../../finelets/helpers/DealWithQueryCollection'
+import {dealWithCollection, searchCollection, dealWithEntity} from '../../finelets/helpers/DealWithQueryCollection'
 const productRefs = {
     User: 'creator'
 }
@@ -18,21 +18,21 @@ const actions = {
     async searchProducts({
         getters
     }, condi) {
-        const data = await queryCollection.searchCollection(getters, 'products', condi, 'Product', productRefs)
+        const data = await searchCollection(getters, 'products', condi, 'Product', productRefs)
         return data
     },
 
     async searchSuppliers({
         getters
     }, condi) {
-        const data = await queryCollection.searchCollection(getters, 'suppliers', condi, 'Supplier', supplierRefs)
+        const data = await searchCollection(getters, 'suppliers', condi, 'Supplier', supplierRefs)
         return data
     },
 
     async searchCustomers({
         getters
     }, condi) {
-        const data = await queryCollection.searchCollection(getters, 'customers', condi, 'Customer', customerRefs)
+        const data = await searchCollection(getters, 'customers', condi, 'Customer', customerRefs)
         return data
     },
 
@@ -41,7 +41,7 @@ const actions = {
     }, data) {
         await $put(data.links.self, data.data.__v, data.data)
         let updated = await $get(data.links.self)
-        updated = await queryCollection.dealWithEntity(updated, 'Product', productRefs)
+        updated = await dealWithEntity(updated, 'Product', productRefs)
         commit('selectedProduct', updated)
     },
 
@@ -50,7 +50,7 @@ const actions = {
     }, data) {
         await $put(data.links.self, data.data.__v, data.data)
         let updated = await $get(data.links.self)
-        updated = await queryCollection.dealWithEntity(updated, 'Supplier', supplierRefs)
+        updated = await dealWithEntity(updated, 'Supplier', supplierRefs)
         commit('selectedSupplier', updated)
     },
 
@@ -59,7 +59,7 @@ const actions = {
     }, data) {
         await $put(data.links.self, data.data.__v, data.data)
         const updated = await $get(data.links.self)
-        const entity = await queryCollection.dealWithEntity(updated, 'Customer', customerRefs)
+        const entity = await dealWithEntity(updated, 'Customer', customerRefs)
         commit('selectedCustomer', entity)
     },
 
