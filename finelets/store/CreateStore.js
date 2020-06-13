@@ -60,7 +60,7 @@ export default (config) => {
     key: 'vuex', // The key to store the state on in the storage provider.
     storage: window.localStorage, // or window.sessionStorage or localForage
     reducer: (state) => {
-      const stateToStore = [...items]
+      const stateToStore = [...items, 'currentPage']
       const result = {}
       _.forEach(stateToStore, (item) => {
         result[item] = state[item]
