@@ -80,7 +80,7 @@ export default {
   },
   methods: {
     isMasterItemReadonly (item) {
-      return !this.master.editable && !item.editable
+      return !this.master.editable || !item.editable
     },
     onEdit () {
       this.showmaster = true
