@@ -11,7 +11,7 @@
         <h1>Welcome to our support center 1.0.1</h1>
         <p>Here we will list all indexed about current part!</p>
       </div>
-      <div slot="requirements">
+      <!-- <div slot="requirements">
         <filters-form
           :config="requirementFilters"
           class="my-2"
@@ -61,7 +61,7 @@
             </div>
           </template>
         </item-list>
-      </div>
+      </div> -->
     </tabpage>
   </master-details>
 </template>
@@ -86,32 +86,20 @@ export default {
   },
   computed: {
     master() {
-      const data = this.$store.getters.selectedCustomer.data;
+      const data = this.$store.getters.selectedCustomerRequirement.data;
       return {
         editable: true,
         avatar: "/src/static/img/suixi.jpg",
-        title: data.code,
-        subtitle: data.name,
+        title: "客户需求",
+        subtitle: data.date,
         items: [
           {
-            name: "code",
+            name: "date",
             icon: "shield"
           },
           {
-            name: "name",
+            name: "requirement",
             icon: "note"
-          },
-          {
-            name: "address",
-            icon: "milestone"
-          },
-          {
-            name: "link",
-            icon: "primitive-dot"
-          },
-          {
-            name: "tags",
-            icon: "tag"
           }
         ],
         data,

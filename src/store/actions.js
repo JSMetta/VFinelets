@@ -10,7 +10,7 @@ const actions = {
     async searchRequirements({}, url, condi) {
         if (condi) url = `${url}?${condi}`
         const coll = await $get(url)
-        const data = await dealWithCollection(coll, 'CustomerRequirement')
+        const data = await dealWithCollection(coll, 'CustomerRequirement', {Customer: 'customer'})
         return data
     },
 
