@@ -1,5 +1,4 @@
 import {$get, $post, $login, $put, $entry, $delete, $upload, $fetchAsset } from '../../finelets/plugins/fetch'
-// import queryCollection from '../../finelets/helpers/DealWithQueryCollection'
 import {dealWithCollection, searchCollection, dealWithEntity} from '../../finelets/helpers/DealWithQueryCollection'
 const productRefs = {
     User: 'creator'
