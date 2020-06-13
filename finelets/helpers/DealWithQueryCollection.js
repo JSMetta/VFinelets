@@ -21,7 +21,7 @@ function dealWithCollectionItem (type, data) {
   return entity
 }
 
-export async function dealWithCollection (data, type, refs) {
+async function dealWithCollection (data, type, refs) {
   const result = []
   for (let i = 0; i < data.collection.items.length; i++) {
     let entity = await $get(data.collection.items[i].link.href)
@@ -61,6 +61,7 @@ async function searchCollection (getters, rel, condi, type, refs) {
 const utils = {
   searchCollection,
   dealWithEntity,
-  dealWithLinkages
+  dealWithLinkages,
+  dealWithCollection
 }
 export default utils
