@@ -1,12 +1,20 @@
-import { $get, $post, $login, $put, $entry, $delete, $upload, $fetchAsset } from '../../finelets/plugins/fetch'
+import {$get, $post, $login, $put, $entry, $delete, $upload, $fetchAsset } from '../../finelets/plugins/fetch'
 import queryCollection from '../../finelets/helpers/DealWithQueryCollection'
+import {dealWithCollection} from '../../finelets/helpers/DealWithQueryCollection'
 const productRefs = {
-  User: 'creator'
+    User: 'creator'
 }
 const supplierRefs = productRefs
 const customerRefs = productRefs
 
 const actions = {
+    async searchRequirements({}, url, condi) {
+        if (condi) url = `${url}?${condi}`
+        const coll = await $get(url)
+        const data = await dealWithCollection(coll, 'CustomerRequirement')
+        return data
+    },
+
     async searchProducts({
         getters
     }, condi) {
