@@ -2,7 +2,7 @@
   <div class="mx-auto w-75">
     <div class="row mt-4 justify-content-center">
       <div class="col-3">
-          <img class="bg-dark" src="/static/img/JSM2-2.jpg" style="width:100%"/>
+          <img class="bg-dark" src="/src/static/img/JSM2-2.jpg" style="width:100%"/>
       </div>
       <div class="col-9">
         <div class="d-flex align-items-baseline">
