@@ -67,10 +67,11 @@
 </template>
 
 <script>
-import MasterDetails from "../../../finelets/components/MasterDetails/MasterDetails.vue";
-import FiltersForm from "../../../finelets/components/FiltersForm.vue";
-import ItemList from "../../../finelets/components/ItemList.vue";
-const ROUTE_NAME = "masterCustomer";
+import MasterDetails from "../../../finelets/components/MasterDetails/MasterDetails.vue"
+import FiltersForm from "../../../finelets/components/FiltersForm.vue"
+import ItemList from "../../../finelets/components/ItemList.vue"
+
+const ROUTE_NAME = "masterCustomer"
 
 export default {
   components: {
@@ -86,23 +87,27 @@ export default {
   },
   computed: {
     master() {
-      const data = this.$store.getters.selectedCustomerRequirement.data;
+      const entity = this.$store.getters.selectedCustomerRequirement
+      const date = new Date(entity.data.date)
+      entity.data.dateStr = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}`
       return {
         editable: true,
         avatar: "/src/static/img/suixi.jpg",
         title: "客户需求",
-        subtitle: data.date,
+        subtitle: entity.customer.data.name,
         items: [
           {
-            name: "date",
+            name: "dateStr",
+            editable: false,
             icon: "shield"
           },
           {
             name: "requirement",
+            editable: false,
             icon: "note"
           }
         ],
-        data,
+        data: entity.data,
         update: this.onSaveMaster
       };
     },
