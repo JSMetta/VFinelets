@@ -21,7 +21,7 @@ function dealWithCollectionItem (type, data) {
   return entity
 }
 
-async function dealWithCollection (data, type, refs) {
+export async function dealWithCollection (data, type, refs) {
   const result = []
   for (let i = 0; i < data.collection.items.length; i++) {
     let entity = await $get(data.collection.items[i].link.href)
@@ -31,7 +31,7 @@ async function dealWithCollection (data, type, refs) {
   return result
 }
 
-async function dealWithEntity (entity, name, refs) {
+export async function dealWithEntity (entity, name, refs) {
   let result = dealWithCollectionItem(name, entity)
   const finalRefs = refs || {}
   for (var key in finalRefs) {
@@ -49,7 +49,7 @@ async function dealWithEntity (entity, name, refs) {
   return result
 }
 
-async function searchCollection (getters, rel, condi, type, refs) {
+export async function searchCollection (getters, rel, condi, type, refs) {
   const entry = getters.entry
   let url = entry[rel]
   if (condi) url = `${url}?${condi}`
@@ -61,7 +61,6 @@ async function searchCollection (getters, rel, condi, type, refs) {
 const utils = {
   searchCollection,
   dealWithEntity,
-  dealWithLinkages,
-  dealWithCollection
+  dealWithLinkages
 }
 export default utils
