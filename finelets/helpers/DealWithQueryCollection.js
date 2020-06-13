@@ -1,7 +1,9 @@
 import _ from 'lodash'
-import {$get} from '../plugins/fetch'
+import {
+  $get
+} from '../plugins/fetch'
 
-function dealWithLinkages (linkages) {
+function dealWithLinkages(linkages) {
   let links = {}
   _.forEach(linkages, item => {
     links[item.rel] = item.href
@@ -9,7 +11,7 @@ function dealWithLinkages (linkages) {
   return links
 }
 
-function dealWithCollectionItem (type, data) {
+function dealWithCollectionItem(type, data) {
   const entity = {
     data: data[type]
   }
@@ -21,7 +23,7 @@ function dealWithCollectionItem (type, data) {
   return entity
 }
 
-export async function dealWithCollection (data, type, refs) {
+export async function dealWithCollection(data, type, refs) {
   const result = []
   for (let i = 0; i < data.collection.items.length; i++) {
     let entity = await $get(data.collection.items[i].link.href)
@@ -31,25 +33,27 @@ export async function dealWithCollection (data, type, refs) {
   return result
 }
 
-export async function dealWithEntity (entity, name, refs) {
+export async function dealWithEntity(entity, name, refs) {
   let result = dealWithCollectionItem(name, entity)
   const finalRefs = refs || {}
   for (var key in finalRefs) {
     const flds = _.isArray(finalRefs[key]) ? finalRefs[key] : [finalRefs[key]]
     for (let i = 0; i < flds.length; i++) {
       const fld = flds[i]
-      if (entity[name][fld]) {
-        let obj = await $get(entity[name][fld])
+      let url = result.links[fld]
+      if (!url) url = entity[name][fld]
+      if (url) {
+        let obj = await $get(url)
         obj = dealWithCollectionItem(key, obj)
-        result.data[fld] = obj.data.id
         result[fld] = obj
-      }
+        if (entity[name][fld]) result.data[fld] = obj.data.id
+      } 
     }
   }
   return result
 }
 
-export async function searchCollection (getters, rel, condi, type, refs) {
+export async function searchCollection(getters, rel, condi, type, refs) {
   const entry = getters.entry
   let url = entry[rel]
   if (condi) url = `${url}?${condi}`
