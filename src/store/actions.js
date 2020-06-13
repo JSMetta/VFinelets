@@ -1,17 +1,15 @@
-import {
-    $get, $post, $put, $delete
-  } from '../../finelets/plugins/fetch'
-import queryCollection from '../../finelets/helpers/DealWithQueryCollection'
+import { $get, $post, $put, $delete } from '../../finelets/plugins/fetch'
+import { searchCollection, dealWithEntity } from '../../finelets/helpers/DealWithQueryCollection'
 
 const actions = {
     async searchPrograms ({getters}, condi) {
-        const data = await queryCollection.searchCollection(getters, 'programs', condi, 'Program')
+        const data = await searchCollection(getters, 'programs', condi, 'Program')
         return data
       },
     
       async getProgram (ctx, url) {
         let data = await $get(url)
-        data = await queryCollection.dealWithEntity(data, 'Program')
+        data = await dealWithEntity(data, 'Program')
         return data
       },
     
