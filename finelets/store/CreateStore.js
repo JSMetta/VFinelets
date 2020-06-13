@@ -10,26 +10,8 @@ import __states from './states'
 const __items = ['entry', 'token', 'user', 'selectedUser', 'avatar']
 
 Vue.use(Vuex)
-// localStorage.clear()
-const vuexLocalStorage = new VuexPersist({
-  key: 'vuex', // The key to store the state on in the storage provider.
-  storage: window.localStorage, // or window.sessionStorage or localForage
-  reducer: (state) => {
-    const items = [...__items, 'currentPage']
-    const result = {}
-    _.forEach(items, (item) => {
-      result[item] = state[item]
-    })
-    return result  
-  }
-  // reducer: (state) => ({ user: state.user, token: state.token, avatar: state.avatar }),
-  // Function that passes the state and returns the state with only the objects you want to store.
-  // reducer: state => state,
-  // Function that passes a mutation and lets you decide if it should update the state in localStorage.
-  // filter: mutation => (true)
-})
 
-function createGetters (items) {
+function createGetters(items) {
   const obj = {}
   _.forEach(items, (item) => {
     obj[item] = (state) => state[item]
@@ -37,7 +19,7 @@ function createGetters (items) {
   return obj
 }
 
-function createMutations (mutations) {
+function createMutations(mutations) {
   const obj = {}
   _.forEach(mutations, (m) => {
     obj[m] = (state, data) => {
@@ -47,7 +29,7 @@ function createMutations (mutations) {
   return obj
 }
 
-function createStates (states) {
+function createStates(states) {
   const obj = {}
   _.forEach(states, (m) => {
     obj[m] = null
@@ -57,18 +39,52 @@ function createStates (states) {
 
 export default (config) => {
   const items = [...__items, ...config.items]
-  const states = {...createStates(items), ...__states, ...config.states}
-  const getters = {...createGetters(items), ...__getters, ...config.getters}
-  const mutations = {...createMutations(items), ...__mutations, ...config.mutations}
+  const states = {
+    ...createStates(items),
+    ...__states,
+    ...config.states
+  }
+  const getters = {
+    ...createGetters(items),
+    ...__getters,
+    ...config.getters
+  }
+  const mutations = {
+    ...createMutations(items),
+    ...__mutations,
+    ...config.mutationss
+  }
+
+  // localStorage.clear()
+  const vuexLocalStorage = new VuexPersist({
+    key: 'vuex', // The key to store the state on in the storage provider.
+    storage: window.localStorage, // or window.sessionStorage or localForage
+    reducer: (state) => {
+      const stateToStore = [...items]
+      const result = {}
+      _.forEach(stateToStore, (item) => {
+        result[item] = state[item]
+      })
+      return result
+    }
+    // reducer: (state) => ({ user: state.user, token: state.token, avatar: state.avatar }),
+    // Function that passes the state and returns the state with only the objects you want to store.
+    // reducer: state => state,
+    // Function that passes a mutation and lets you decide if it should update the state in localStorage.
+    // filter: mutation => (true)
+  })
 
   const store = new Vuex.Store({
     strict: process.env.NODE_ENV !== 'production',
-    state () {
+    state() {
       return states
     },
     getters,
     mutations,
-    actions: {...__actions, ...config.actions},
+    actions: {
+      ...__actions,
+      ...config.actions
+    },
     plugins: [vuexLocalStorage.plugin]
   })
 
