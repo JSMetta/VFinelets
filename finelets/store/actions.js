@@ -4,22 +4,28 @@ import {
 import queryCollection from '../helpers/DealWithQueryCollection'
 
 const actions = {
-  async entry ({commit}) {
+  async refreshUserAvatar ({getters, commit}) {
+    const user = getters.user
+    if(user && user.pic) {
+      const avatar = await $fetchAsset(`/pictures/${user.pic}`)
+      commit('avatar', avatar)
+    }
+  },
+
+  async entry ({commit, dispatch}) {
     const entry = await $entry()
     const links = queryCollection.dealWithLinkages(entry)
     commit('entry', links)
+    await dispatch('refreshUserAvatar')
   },
 
-  async login ({commit}, data) {
+  async login ({commit, dispatch}, data) {
     try {
       const session = await $login(data)
       if (session) {
         commit('token', session.token)
         commit('user', session.user)
-        if(session.user.pic) {
-          const avatar = await $fetchAsset(`/pictures/${session.user.pic}`)
-          commit('avatar', avatar)
-        }
+        await dispatch('refreshUserAvatar')
       }
       return session
     } catch (e) {
