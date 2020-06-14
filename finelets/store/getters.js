@@ -6,6 +6,9 @@ const getters = {
     const currentPage = state.currentPage
     return currentPage[finalRoute]
   },
+  selected: (state) => (key) => {
+    return state.selected[key]
+  },
   avatar: (state) => {
     const avatar = state.avatar ? state.avatar : constDef.DEFAULT_IMG_AVATAR
     return avatar

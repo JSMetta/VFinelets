@@ -3,7 +3,7 @@ import {
   $get
 } from '../plugins/fetch'
 
-function dealWithLinkages(linkages) {
+export function dealWithLinkages(linkages) {
   let links = {}
   _.forEach(linkages, item => {
     links[item.rel] = item.href
@@ -64,6 +64,7 @@ export async function searchCollection(getters, rel, condi, type, refs) {
 
 const utils = {
   searchCollection,
+  dealWithCollection,
   dealWithEntity,
   dealWithLinkages
 }

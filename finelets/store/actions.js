@@ -1,7 +1,7 @@
 import {
   $get, $post, $login, $put, $entry, $delete, $upload, $fetchAsset
 } from '../plugins/fetch'
-import queryCollection from '../helpers/DealWithQueryCollection'
+import {dealWithCollection, searchCollection, dealWithEntity, dealWithLinkages} from '../helpers/DealWithQueryCollection'
 
 const actions = {
   async refreshUserAvatar ({getters, commit}) {
@@ -14,7 +14,7 @@ const actions = {
 
   async entry ({commit, dispatch}) {
     const entry = await $entry()
-    const links = queryCollection.dealWithLinkages(entry)
+    const links = dealWithLinkages(entry)
     commit('entry', links)
     await dispatch('refreshUserAvatar')
   },
@@ -49,7 +49,7 @@ const actions = {
   async authToUser ({commit}, {selfUrl, url, data}) {
     await $put(url, undefined, data)
     let user = await $get(selfUrl)
-    user = await queryCollection.dealWithEntity(user, 'User')
+    user = await dealWithEntity(user, 'User')
     commit('selectedUser', user)
   },
 
@@ -83,8 +83,15 @@ const actions = {
   },
 
   async searchUsers ({getters}, condi) {
-    const data = await queryCollection.searchCollection(getters, 'users', condi, 'User')
+    const data = await searchCollection(getters, 'users', condi, 'User')
     return data
+  },
+
+  async selectResource ({commit}, {url, key, ref}) {
+    let val = await $get(url)
+    val = await dealWithEntity(val, key, ref)
+    commit('selected', {key, val})
+    return val
   }
 }
 
