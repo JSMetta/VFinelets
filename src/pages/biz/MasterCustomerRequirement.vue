@@ -88,24 +88,12 @@ export default {
   computed: {
     master() {
       const entity = this.$store.getters.selectedCustomerRequirement
-      const date = new Date(entity.data.date)
-      entity.data.dateStr = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}`
       return {
-        editable: true,
+        editable: false,
         avatar: "/src/static/img/suixi.jpg",
         title: "客户需求",
         subtitle: entity.customer.data.name,
         items: [
-          {
-            name: "dateStr",
-            editable: false,
-            icon: "shield"
-          },
-          {
-            name: "requirement",
-            editable: false,
-            icon: "note"
-          }
         ],
         data: entity.data,
         update: this.onSaveMaster
