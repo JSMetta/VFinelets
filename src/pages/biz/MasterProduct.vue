@@ -16,10 +16,10 @@
 </template>
 
 <script>
-import MasterDetails from "../../../finelets/components/MasterDetails/MasterDetails.vue";
-import FiltersForm from "../../../finelets/components/FiltersForm.vue";
-import ItemList from "../../../finelets/components/ItemList.vue";
-const ROUTE_NAME = "masterProduct";
+import MasterDetails from "../../../finelets/components/MasterDetails/MasterDetails.vue"
+import FiltersForm from "../../../finelets/components/FiltersForm.vue"
+import ItemList from "../../../finelets/components/ItemList.vue"
+const ROUTE_NAME = "masterProduct"
 export default {
   components: {
     MasterDetails,
@@ -30,11 +30,12 @@ export default {
     return {
       currentTab: null,
       orders: []
-    };
+    }
   },
   computed: {
     master() {
-      const product = this.$store.getters.selectedProduct.data;
+      const entity = this.$store.getters.selected('Product')
+      const product = entity.data
       if (product.spec) {
         product.specDnsty = product.spec.dnsty;
         product.specWidth = product.spec.width;
@@ -143,19 +144,19 @@ export default {
   methods: {
     async onSaveMaster(data) {
       if (data) {
-        data.spec = data.spec || {};
-        data.spec.dnsty = data.specDnsty;
-        data.spec.width = data.specWidth;
-        data.spec.GSM = data.specGSM;
-        data.grey = data.grey || {};
-        data.grey.dnsty = data.greyDnsty;
-        data.grey.width = data.greyWidth;
-        data.grey.GSM = data.greyGSM;
-        data.creator = this.$store.getters.user.id;
+        data.spec = data.spec || {}
+        data.spec.dnsty = data.specDnsty
+        data.spec.width = data.specWidth
+        data.spec.GSM = data.specGSM
+        data.grey = data.grey || {}
+        data.grey.dnsty = data.greyDnsty
+        data.grey.width = data.greyWidth
+        data.grey.GSM = data.greyGSM
+        data.creator = this.$store.getters.user.id
         await this.$store.dispatch("updateProduct", {
           data,
-          links: this.$store.getters.selectedProduct.links
-        });
+          url: this.$store.getters.selected('Product').links.self
+        })
       }
     },
     async loadPageData(page) {

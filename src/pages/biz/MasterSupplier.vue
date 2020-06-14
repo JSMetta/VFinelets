@@ -16,10 +16,10 @@
 </template>
 
 <script>
-import MasterDetails from "../../../finelets/components/MasterDetails/MasterDetails.vue";
-import FiltersForm from "../../../finelets/components/FiltersForm.vue";
-import ItemList from "../../../finelets/components/ItemList.vue";
-const ROUTE_NAME = "masterSupplier";
+import MasterDetails from "../../../finelets/components/MasterDetails/MasterDetails.vue"
+import FiltersForm from "../../../finelets/components/FiltersForm.vue"
+import ItemList from "../../../finelets/components/ItemList.vue"
+const ROUTE_NAME = "masterSupplier"
 export default {
   components: {
     MasterDetails,
@@ -34,7 +34,7 @@ export default {
   },
   computed: {
     master() {
-      const data = this.$store.getters.selectedSupplier.data;
+      const data = this.$store.getters.selected('Supplier').data;
       return {
         editable: true,
         avatar: "/src/static/img/suixi.jpg",
@@ -64,7 +64,7 @@ export default {
         ],
         data,
         update: this.onSaveMaster
-      };
+      }
     },
     orderFilters() {
       return {
@@ -94,8 +94,8 @@ export default {
         data.creator = this.$store.getters.user.id;
         await this.$store.dispatch("updateSupplier", {
           data,
-          links: this.$store.getters.selectedSupplier.links
-        });
+          url: this.$store.getters.selected('Supplier').links.self
+        })
       }
     },
     async loadPageData(page) {

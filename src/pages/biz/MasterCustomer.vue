@@ -67,10 +67,10 @@
 </template>
 
 <script>
-import MasterDetails from "../../../finelets/components/MasterDetails/MasterDetails.vue";
-import FiltersForm from "../../../finelets/components/FiltersForm.vue";
-import ItemList from "../../../finelets/components/ItemList.vue";
-const ROUTE_NAME = "masterCustomer";
+import MasterDetails from "../../../finelets/components/MasterDetails/MasterDetails.vue"
+import FiltersForm from "../../../finelets/components/FiltersForm.vue"
+import ItemList from "../../../finelets/components/ItemList.vue"
+const ROUTE_NAME = "masterCustomer"
 
 export default {
   components: {
@@ -86,12 +86,12 @@ export default {
   },
   computed: {
     master() {
-      const data = this.$store.getters.selectedCustomer.data;
+      const customer = this.$store.getters.selected('Customer')
       return {
         editable: true,
         avatar: "/src/static/img/suixi.jpg",
-        title: data.code,
-        subtitle: data.name,
+        title: customer.data.code,
+        subtitle: customer.data.name,
         items: [
           {
             name: "code",
@@ -114,15 +114,15 @@ export default {
             icon: "tag"
           }
         ],
-        data,
+        data: customer.data,
         update: this.onSaveMaster
-      };
+      }
     },
     requirementFilters() {
       return {
         search: { width: 400 },
         cmdButton: { text: "新增" }
-      };
+      }
     },
     tabs() {
       return [
@@ -134,19 +134,20 @@ export default {
           id: "requirements",
           title: "客户需求"
         }
-      ];
+      ]
     }
   },
   async created() {
-    let tab = this.$store.getters.currentPage(ROUTE_NAME);
-    tab = tab || "overview";
-    this.currentTab = tab;
-    await this.loadPageData(tab);
+    let tab = this.$store.getters.currentPage(ROUTE_NAME)
+    tab = tab || "overview"
+    this.currentTab = tab
+    await this.loadPageData(tab)
   },
 
   methods: {
     async onSearchRequirements(cond) {
-      const url = this.$store.getters.selectedCustomer.links.requirements
+      const customer = this.$store.getters.selected('Customer')
+      const url = customer.links.requirements
       this.requirements = await this.$store.dispatch("searchRequirements", url);
     },
 
@@ -155,8 +156,8 @@ export default {
         data.creator = this.$store.getters.user.id;
         await this.$store.dispatch("updateCustomer", {
           data,
-          links: this.$store.getters.selectedCustomer.links
-        });
+          url: this.$store.getters.selected('Customer').links.self
+        })
       }
     },
     async loadPageData(page) {
@@ -174,7 +175,7 @@ export default {
     },
 
     onCreateRequirement () {
-      this.$store.commit('selectedRequirement')
+      this.$store.commit('selected', {key: 'CustomerRequirement'})
       let path = {
         name: 'requirementForm'
       }
@@ -182,7 +183,7 @@ export default {
     },
 
     navToRequirement (data) {
-      this.$store.commit('selectedCustomerRequirement', data)
+      this.$store.commit("selected", { key: "CustomerRequirement", val: data })
       let path = {
         name: 'masterCustomerRequirement'
       }

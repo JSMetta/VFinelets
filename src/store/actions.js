@@ -37,29 +37,32 @@ const actions = {
 
     async updateProduct({
         commit
-    }, data) {
-        await $put(data.links.self, data.data.__v, data.data)
-        let updated = await $get(data.links.self)
-        updated = await dealWithEntity(updated, 'Product', productRefs)
-        commit('selectedProduct', updated)
+    }, {data, url}) {
+        await $put(url, data.__v, data)
+        let val = await $get(url)
+        val = await dealWithEntity(val, 'Product', productRefs)
+        commit('selected', {key: 'Product', val})
+        return val
     },
 
     async updateSupplier({
         commit
-    }, data) {
-        await $put(data.links.self, data.data.__v, data.data)
-        let updated = await $get(data.links.self)
-        updated = await dealWithEntity(updated, 'Supplier', supplierRefs)
-        commit('selectedSupplier', updated)
+    }, {data, url}) {
+        await $put(url, data.__v, data)
+        let val = await $get(url)
+        val = await dealWithEntity(val, 'Supplier', supplierRefs)
+        commit('selected', {key: 'Supplier', val})
+        return val
     },
 
     async updateCustomer({
         commit
-    }, data) {
-        await $put(data.links.self, data.data.__v, data.data)
-        const updated = await $get(data.links.self)
-        const entity = await dealWithEntity(updated, 'Customer', customerRefs)
-        commit('selectedCustomer', entity)
+    }, {data, url}) {
+        await $put(url, data.__v, data)
+        let val = await $get(url)
+        val = await dealWithEntity(val, 'Customer', customerRefs)
+        commit('selected', {key: 'Customer', val})
+        return val
     },
 
     async getSupplier(ctx, url) {

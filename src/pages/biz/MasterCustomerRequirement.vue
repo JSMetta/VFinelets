@@ -71,7 +71,7 @@ import MasterDetails from "../../../finelets/components/MasterDetails/MasterDeta
 import FiltersForm from "../../../finelets/components/FiltersForm.vue"
 import ItemList from "../../../finelets/components/ItemList.vue"
 
-const ROUTE_NAME = "masterCustomer"
+const ROUTE_NAME = "masterCustomerRequirement"
 
 export default {
   components: {
@@ -83,11 +83,11 @@ export default {
     return {
       currentTab: null,
       requirements: []
-    };
+    }
   },
   computed: {
     master() {
-      const entity = this.$store.getters.selectedCustomerRequirement
+      const entity = this.$store.getters.selected('CustomerRequirement')
       return {
         editable: false,
         avatar: "/src/static/img/suixi.jpg",
@@ -97,13 +97,13 @@ export default {
         ],
         data: entity.data,
         update: this.onSaveMaster
-      };
+      }
     },
     requirementFilters() {
       return {
         search: { width: 400 },
         cmdButton: { text: "新增" }
-      };
+      }
     },
     tabs() {
       return [

@@ -7,21 +7,9 @@
       slot="details"
       @changed="onPageChanged"
     >
-      <div slot="overview">
-        <h1>Welcome to our support center 1.0.1</h1>
-        <p>
-          We are here to help! Please read the
-          <a>F.A.Q</a> first,
-          and if you don't find the answer to your question,
-          <a>
-            send
-            us a ticket!
-          </a>
-        </p>
-      </div>
       <div slot="products">
         <filters-form
-          :config="productFilters"
+          :config="filters"
           class="my-2"
           @search="onSearchProducts"
           @action="onCreateProduct"
@@ -186,7 +174,7 @@
       </div>
       <div slot="suppliers">
         <filters-form
-          :config="supplierFilters"
+          :config="filters"
           class="my-2"
           @search="onSearchSuppliers"
           @action="onCreateSupplier"
@@ -262,7 +250,7 @@
       </div>
       <div slot="customers">
         <filters-form
-          :config="customerFilters"
+          :config="filters"
           class="my-2"
           @search="onSearchCustomers"
           @action="onCreateCustomer"
@@ -341,11 +329,12 @@
 </template>
 
 <script>
-import { createQueryString } from "../../../finelets/helpers/QueryHelper.js";
-import MasterDetails from "../../../finelets/components/MasterDetails/MasterDetails.vue";
-import FiltersForm from "../../../finelets/components/FiltersForm.vue";
-import ItemList from "../../../finelets/components/ItemList.vue";
-const ROUTE_NAME = "home";
+import { createQueryString } from "../../../finelets/helpers/QueryHelper.js"
+import MasterDetails from "../../../finelets/components/MasterDetails/MasterDetails.vue"
+import FiltersForm from "../../../finelets/components/FiltersForm.vue"
+import ItemList from "../../../finelets/components/ItemList.vue"
+
+const ROUTE_NAME = "home"
 
 export default {
   components: {
@@ -354,70 +343,50 @@ export default {
     ItemList
   },
   data() {
-    const user = this.$store.getters.user;
-    const data = {
-      ...user
-    };
-    const master = {
-      editable: true,
-      avatar: this.$store.getters.avatar,
-      title: user.name,
-      email: user.email,
-      items: [
-        {
-          name: "userId",
-          icon: "person"
-        },
-        {
-          name: "name",
-          icon: "note"
-        },
-        {
-          name: "email",
-          icon: "mail"
-        }
-      ],
-      data,
-      update: this.onSaveMaster
-    };
     return {
       currentTab: null,
       products: [],
       suppliers: [],
       customers: [],
-      userAttrs: {
-        userId: null,
-        name: null,
-        email: null
-      },
-      master
-    };
+    }
   },
   computed: {
-    productFilters() {
-      return {
-        search: { width: 400 },
-        cmdButton: { text: "新增" }
+    master() {
+      const user = this.$store.getters.user;
+      const data = {
+        ...user
       };
+      return {
+        editable: true,
+        avatar: this.$store.getters.avatar,
+        title: user.name,
+        email: user.email,
+        items: [
+          {
+            name: "userId",
+            icon: "person"
+          },
+          {
+            name: "name",
+            icon: "note"
+          },
+          {
+            name: "email",
+            icon: "mail"
+          }
+        ],
+        data,
+        update: this.onSaveMaster
+      }
     },
-    supplierFilters() {
+    filters() {
       return {
         search: { width: 400 },
         cmdButton: { text: "新增" }
-      };
-    },
-    customerFilters() {
-      return {
-        search: { width: 400 },
-        cmdButton: { text: "新增" }
-      };
+      }
     },
     tabs() {
       return [
-        {
-          id: "overview",
-          title: "概要"
-        },
         {
           id: "products",
           title: "产品"
@@ -430,35 +399,35 @@ export default {
           id: "customers",
           title: "客户"
         }
-      ];
+      ]
     }
   },
   async created() {
-    let tab = this.$store.getters.currentPage(ROUTE_NAME);
-    tab = tab || "overview";
-    this.currentTab = tab;
-    await this.loadPageData(tab);
+    let tab = this.$store.getters.currentPage(ROUTE_NAME)
+    tab = tab || "products"
+    this.currentTab = tab
+    await this.loadPageData(tab)
   },
   methods: {
     stateImg(state) {
-      const imgs = { draft: "pencil", published: "briefcase", expired: "x" };
-      let s = state || "draft";
-      return imgs[s];
+      const imgs = { draft: "pencil", published: "briefcase", expired: "x" }
+      let s = state || "draft"
+      return imgs[s]
     },
 
     async onSearchProducts(cond) {
-      let r = createQueryString([], cond);
-      this.products = await this.$store.dispatch("searchProducts", r);
+      let r = createQueryString([], cond)
+      this.products = await this.$store.dispatch("searchProducts", r)
     },
 
     async onSearchSuppliers(cond) {
-      let r = createQueryString([], cond);
-      this.suppliers = await this.$store.dispatch("searchSuppliers", r);
+      let r = createQueryString([], cond)
+      this.suppliers = await this.$store.dispatch("searchSuppliers", r)
     },
 
     async onSearchCustomers(cond) {
-      let r = createQueryString([], cond);
-      this.customers = await this.$store.dispatch("searchCustomers", r);
+      let r = createQueryString([], cond)
+      this.customers = await this.$store.dispatch("searchCustomers", r)
     },
 
     async loadPageData(page) {
@@ -466,74 +435,67 @@ export default {
         products: this.onSearchProducts,
         suppliers: this.onSearchSuppliers,
         customers: this.onSearchCustomers
-      };
-      const func = loaders[page];
-      if (!func) return;
-      await func({ search: "", filters: [] });
+      }
+      const func = loaders[page]
+      if (!func) return
+      await func({ search: "", filters: [] })
     },
 
     async onPageChanged(page) {
-      this.$store.commit("currentPage", { route: ROUTE_NAME, page });
-      await this.loadPageData(page);
+      this.$store.commit("currentPage", { route: ROUTE_NAME, page })
+      await this.loadPageData(page)
     },
 
     onCreateProduct() {
-      this.$store.commit("selectedProduct");
+      this.$store.commit("selected", { key: "Product" })
       let path = {
         name: "productForm"
-      };
-      this.$router.push(path);
+      }
+      this.$router.push(path)
     },
 
     onCreateSupplier() {
-      this.$store.commit("selectedSupplier");
+      this.$store.commit("selected", { key: "Supplier" })
       let path = {
         name: "supplierForm"
-      };
-      this.$router.push(path);
+      }
+      this.$router.push(path)
     },
 
     onCreateCustomer() {
-      this.$store.commit("selectedCustomer");
+      this.$store.commit("selected", { key: "Customer" })
       let path = {
         name: "customerForm"
-      };
-      this.$router.push(path);
+      }
+      this.$router.push(path)
     },
 
     async onSaveMaster(data) {
-      this.$store.dispatch("saveUserProfile", data);
+      this.$store.dispatch("saveUserProfile", data)
     },
 
     navToProduct(data) {
-      this.$store.commit("selectedProduct", data);
+      this.$store.commit("selected", { key: "Product", val: data })
       let path = {
         name: "masterProduct"
       };
-      this.$router.push(path);
+      this.$router.push(path)
     },
 
     navToSupplier(data) {
-      this.$store.commit("selectedSupplier", data);
+      this.$store.commit("selected", { key: "Supplier", val: data })
       let path = {
         name: "masterSupplier"
-      };
-      this.$router.push(path);
+      }
+      this.$router.push(path)
     },
 
-    async navToCustomer(data) {
-      await this.$store.dispatch("selectResource", {
-        key: "Customer",
-        url: data.links.self,
-        ref: {
-          User: "creator"
-        }
-      });
-      this.$store.commit("selectedCustomer", data);
+    navToCustomer(data) {
+      this.$store.commit("selected", { key: "Customer", val: data })
       let path = {
         name: "masterCustomer"
-      };
-      this.$router.push(path);
+      }
+      this.$router.push(path)
     }
   }
 };
