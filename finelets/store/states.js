@@ -1,4 +1,5 @@
 const states = {
-  currentPage: {}
+  currentPage: {},
+  selected: {}
 }
 export default states
