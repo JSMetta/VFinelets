@@ -7,6 +7,20 @@ const supplierRefs = productRefs
 const customerRefs = productRefs
 
 const actions = {
+    async searchProductChainParts({}, url, condi) {
+        if (condi) url = `${url}?${condi}`
+        const coll = await $get(url)
+        const data = await dealWithCollection(coll, 'ProductChainPart', {Part: 'part'})
+        return data
+    },
+
+    async searchProductChains({}, url, condi) {
+        if (condi) url = `${url}?${condi}`
+        const coll = await $get(url)
+        const data = await dealWithCollection(coll, 'ProductChain', {Product: 'product'})
+        return data
+    },
+
     async searchRequirements({}, url, condi) {
         if (condi) url = `${url}?${condi}`
         const coll = await $get(url)

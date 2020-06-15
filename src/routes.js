@@ -6,6 +6,7 @@ import MasterProduct from './pages/biz/MasterProduct.vue'
 import MasterSupplier from './pages/biz/MasterSupplier.vue'
 import MasterCustomer from './pages/biz/MasterCustomer.vue'
 import MasterCustomerRequirement from './pages/biz/MasterCustomerRequirement.vue'
+import MasterProductChain from './pages/biz/MasterProductChain.vue'
 
 const ROLE_BIZ = 'BIZ'
 
@@ -49,6 +50,14 @@ const routes = [
       role: ROLE_BIZ
     },
     component: MasterCustomerRequirement
+  },
+  {
+    path: '/master/product/chain',
+    name: 'masterProductChain',
+    meta: {
+      role: ROLE_BIZ
+    },
+    component: MasterProductChain
   },
   {
     path: '/forms/product',

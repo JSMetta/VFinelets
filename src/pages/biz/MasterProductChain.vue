@@ -7,9 +7,9 @@
       slot="details"
       @changed="onPageChanged"
     >
-      <div slot="overview">
+      <div slot="product">
         <div class="d-flex  flex-column" style="font-size:15px">
-          <div class="d-flex flex-column mt-3">
+          <!-- <div class="d-flex flex-column mt-3">
             <div class="d-flex">
               <p>客户：</p>
               <p>{{master.entity.customer.data.code}}</p>
@@ -25,33 +25,38 @@
           </div> 
           <div class="d-flex justify-content-end">
             <p>需求日期：</p>
-            <p>{{master.data.requirementDate}}</p>
-          </div> 
+            <p>{{this.dateFormat(master.data.date)}}</p>
+          </div>  -->
         </div>
       </div>
-      <div slot="productChains">
+      <div slot="parts">
         <filters-form
           :config="filters"
           class="my-2"
-          @search="onSearchProductChains"
-          @action="onCreateProductChain"
+          @search="onSearchParts"
+          @action="onCreatePart"
         />
-        <item-list :items="productChains">
+        <item-list :items="parts">
           <template slot-scope="data">
             <div class="row border-0 p-2">
               <div class="col">
                 <div class="d-flex">
-                  <octicon name="note" class="mt-1" size="16" style="color:green" />
+                  <b-icon icon="gear" class="mt-1" size="16" style="color:green" />
+                  <h6
+                    class="text-primary ml-2"
+                  >{{typeOfPart(data.item.part.data.type)}}</h6>
+
+                  <octicon name="note" class="mt-1 ml-auto" size="16" style="color:green" />
                   <h6
                     class="text-primary ml-2 selectable"
-                    @click="navToProductChain(data.item)"
-                  >{{data.item.data.desc}}</h6>
-                  <b-icon icon="puzzle" class="mt-1 ml-auto" size="16" style="color:green"></b-icon>
-                  <h6 class="text-primary ml-2 selectable"  @click="navToProduct(data.item.product)">
-                    {{data.item.product.data.desc}}
-                  </h6>
+                    @click="navToProductChainPart(data.item)"
+                  >{{data.item.part.data.name}}</h6>
                 </div>
                 <div class="d-flex">
+                  <b-icon v-if="data.item.data.price" icon="plus-circle" class="mt-1" size="16" style="color:green" />
+                  <h6
+                    class="text-primary ml-2"
+                  >{{data.item.data.price}}</h6>
                   <h6
                     class="text-secondary ml-auto"
                     style="font-size:10px"
@@ -70,9 +75,8 @@
 import MasterDetails from "../../../finelets/components/MasterDetails/MasterDetails.vue"
 import FiltersForm from "../../../finelets/components/FiltersForm.vue"
 import ItemList from "../../../finelets/components/ItemList.vue"
-import util from "../../../finelets/helpers/util.js"
 
-const ROUTE_NAME = "masterCustomerRequirement"
+const ROUTE_NAME = "masterProductChain"
 
 export default {
   components: {
@@ -83,17 +87,17 @@ export default {
   data() {
     return {
       currentTab: null,
-      productChains: []
+      parts: []
     }
   },
   computed: {
     master() {
-      const entity = this.$store.getters.selected('CustomerRequirement')
-      entity.data.requirementDate = util.dateFormat(entity.data.date)
+      const entity = this.$store.getters.selected('ProductChain')
       return {
         editable: false,
         avatar: "/src/static/img/suixi.jpg",
-        title: '客户需求',
+        title: entity.data.desc,
+        subtitle: entity.product.data.desc,
         items: [
         ],
         data: entity.data,
@@ -110,12 +114,12 @@ export default {
     tabs() {
       return [
         {
-          id: "overview",
-          title: "内容"
+          id: "product",
+          title: "产品"
         },
         {
-          id: "productChains",
-          title: "方案"
+          id: "parts",
+          title: "原料/工序"
         }
       ]
     }
@@ -128,16 +132,25 @@ export default {
   },
 
   methods: {
-    async onSearchProductChains(cond) {
-      const url = this.$store.getters.selected('CustomerRequirement').links.productChains
-      this.productChains = await this.$store.dispatch("searchProductChains", url)
+    typeOfPart (type) {
+       const typeMap = {
+         material: '原料',
+         process: '工序'
+       }
+       return typeMap[type] 
+    },
+    
+    async onSearchParts(cond) {
+      const url = this.$store.getters.selected('ProductChain').links.parts
+      this.parts = await this.$store.dispatch("searchProductChainParts", url)
     },
 
     async onSaveMaster(data) {
     },
+
     async loadPageData(page) {
       const loaders = {
-        productChains: this.onSearchProductChains
+        parts: this.onSearchParts
       }
       const func = loaders[page]
       if (!func) return
@@ -149,29 +162,21 @@ export default {
       await this.loadPageData(page);
     },
 
-    onCreateProductChain () {
-      this.$store.commit('selected', {key: 'ProductChain'})
+    onCreatePart () {
+      this.$store.commit('selected', {key: 'ProductChainPart'})
       let path = {
-        name: 'productChainForm'
+        name: 'productChainPartForm'
       }
       this.$router.push(path)
     },
 
-    navToProductChain (data) {
-      this.$store.commit("selected", { key: "ProductChain", val: data })
+    navToProductChainPart (data) {
+      this.$store.commit("selected", { key: "ProductChainPart", val: data })
       let path = {
-        name: 'masterProductChain'
+        name: 'masterProductChainPart'
       }
       this.$router.push(path)
-    },
-
-    navToProduct (data) {
-      this.$store.commit("selected", { key: "Product", val: data })
-      let path = {
-        name: "masterProduct"
-      };
-      this.$router.push(path)
-    },
+    }
   }
 }
 </script>
