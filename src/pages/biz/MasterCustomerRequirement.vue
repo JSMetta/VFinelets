@@ -8,8 +8,9 @@
       @changed="onPageChanged"
     >
       <div slot="overview">
-        <h1>Welcome to our support center 1.0.1</h1>
-        <p>Here we will list all indexed about current part!</p>
+        <div class="d-flex align-items-baseline">
+           <h5 class="">客户需求</h5>
+        </div>
       </div>
       <!-- <div slot="requirements">
         <filters-form
@@ -70,6 +71,7 @@
 import MasterDetails from "../../../finelets/components/MasterDetails/MasterDetails.vue"
 import FiltersForm from "../../../finelets/components/FiltersForm.vue"
 import ItemList from "../../../finelets/components/ItemList.vue"
+import moment from "moment"
 
 const ROUTE_NAME = "masterCustomerRequirement"
 
@@ -91,8 +93,8 @@ export default {
       return {
         editable: false,
         avatar: "/src/static/img/suixi.jpg",
-        title: "客户需求",
-        subtitle: entity.customer.data.name,
+        title: entity.customer.data.name,
+        subtitle: this.dateFormat(entity.data.date),
         items: [
         ],
         data: entity.data,
@@ -109,44 +111,48 @@ export default {
       return [
         {
           id: "overview",
-          title: "概要"
+          title: "内容"
         },
         {
           id: "requirements",
-          title: "客户需求"
+          title: "方案"
         }
-      ];
+      ]
     }
   },
   async created() {
-    let tab = this.$store.getters.currentPage(ROUTE_NAME);
-    tab = tab || "overview";
-    this.currentTab = tab;
-    await this.loadPageData(tab);
+    let tab = this.$store.getters.currentPage(ROUTE_NAME)
+    tab = tab || "overview"
+    this.currentTab = tab
+    await this.loadPageData(tab)
   },
 
   methods: {
+    dateFormat (date, pattern = 'YYYY-MM-DD') {
+      return moment(new Date(date)).format(pattern)
+    },
+
     async onSearchRequirements(cond) {
       const url = this.$store.getters.selectedCustomer.links.requirements
-      this.requirements = await this.$store.dispatch("searchRequirements", url);
+      this.requirements = await this.$store.dispatch("searchRequirements", url)
     },
 
     async onSaveMaster(data) {
       if (data) {
-        data.creator = this.$store.getters.user.id;
+        data.creator = this.$store.getters.user.id
         await this.$store.dispatch("updateCustomer", {
           data,
           links: this.$store.getters.selectedCustomer.links
-        });
+        })
       }
     },
     async loadPageData(page) {
       const loaders = {
         requirements: this.onSearchRequirements
       }
-      const func = loaders[page];
-      if (!func) return;
-      await func({ search: "", filters: [] });
+      const func = loaders[page]
+      if (!func) return
+      await func({ search: "", filters: [] })
     },
 
     async onPageChanged(page) {
