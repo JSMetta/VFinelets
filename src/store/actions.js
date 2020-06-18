@@ -1,5 +1,20 @@
-import {$get, $post, $login, $put, $entry, $delete, $upload, $fetchAsset } from '../../finelets/plugins/fetch'
-import {dealWithCollection, searchCollection, dealWithEntity} from '../../finelets/helpers/DealWithQueryCollection'
+import {
+    $get,
+    $post,
+    $login,
+    $put,
+    $entry,
+    $delete,
+    $upload,
+    $fetchAsset
+} from '../../finelets/plugins/fetch'
+import {
+    dealWithCollection,
+    searchCollection,
+    dealWithEntity
+} from '../../finelets/helpers/DealWithQueryCollection'
+import _ from 'lodash'
+
 const productRefs = {
     User: 'creator'
 }
@@ -7,24 +22,42 @@ const supplierRefs = productRefs
 const customerRefs = productRefs
 
 const actions = {
+    async searchProductChainPartQuots({}, url, condi) {
+        if (condi) url = `${url}?${condi}`
+        const coll = await $get(url)
+        const data = await dealWithCollection(coll, 'ProductChainPartQuot', {
+            Product: 'product',
+            ProductChain: 'productChain',
+            Part: 'productChainPart',
+            PartQuot: 'quot'
+        })
+        return data
+    },
+
     async searchProductChainParts({}, url, condi) {
         if (condi) url = `${url}?${condi}`
         const coll = await $get(url)
-        const data = await dealWithCollection(coll, 'ProductChainPart', {Part: 'part'})
+        const data = await dealWithCollection(coll, 'ProductChainPart', {
+            Part: 'part'
+        })
         return data
     },
 
     async searchProductChains({}, url, condi) {
         if (condi) url = `${url}?${condi}`
         const coll = await $get(url)
-        const data = await dealWithCollection(coll, 'ProductChain', {Product: 'product'})
+        const data = await dealWithCollection(coll, 'ProductChain', {
+            Product: 'product'
+        })
         return data
     },
 
     async searchRequirements({}, url, condi) {
         if (condi) url = `${url}?${condi}`
         const coll = await $get(url)
-        const data = await dealWithCollection(coll, 'CustomerRequirement', {Customer: 'customer'})
+        const data = await dealWithCollection(coll, 'CustomerRequirement', {
+            Customer: 'customer'
+        })
         return data
     },
 
@@ -51,46 +84,79 @@ const actions = {
 
     async updateProduct({
         commit
-    }, {data, url}) {
+    }, {
+        data,
+        url
+    }) {
         await $put(url, data.__v, data)
         let val = await $get(url)
         val = await dealWithEntity(val, 'Product', productRefs)
-        commit('selected', {key: 'Product', val})
+        commit('selected', {
+            key: 'Product',
+            val
+        })
         return val
     },
 
     async updateSupplier({
         commit
-    }, {data, url}) {
+    }, {
+        data,
+        url
+    }) {
         await $put(url, data.__v, data)
         let val = await $get(url)
         val = await dealWithEntity(val, 'Supplier', supplierRefs)
-        commit('selected', {key: 'Supplier', val})
+        commit('selected', {
+            key: 'Supplier',
+            val
+        })
         return val
     },
 
     async updateCustomer({
         commit
-    }, {data, url}) {
+    }, {
+        data,
+        url
+    }) {
         await $put(url, data.__v, data)
         let val = await $get(url)
         val = await dealWithEntity(val, 'Customer', customerRefs)
-        commit('selected', {key: 'Customer', val})
+        commit('selected', {
+            key: 'Customer',
+            val
+        })
         return val
     },
 
     async getSupplier(ctx, url) {
-        const data = await $get(url)
+        let data = await $get(url)
+        data = await dealWithEntity(data, 'Supplier', supplierRefs)
         return data
     },
 
     async getCustomer(ctx, url) {
-        const data = await $get(url)
+        let data = await $get(url)
+        data = await dealWithEntity(data, 'Customer', customerRefs)
         return data
     },
 
     async getProduct(ctx, url) {
         const data = await $get(url)
+        data = await dealWithEntity(data, 'Product', productRefs)
+        return data
+    },
+
+    async getCustomerRequirement(ctx, url) {
+        let data = await $get(url)
+        data = await dealWithEntity(data, 'CustomerRequirement', {Customer: 'customer'})
+        return data
+    },
+
+    async getProductChain(ctx, url) {
+        let data = await $get(url)
+        data = await dealWithEntity(data, 'ProductChain', {Product: 'product', CustomerRequirement: 'customerRequirement'})
         return data
     },
 

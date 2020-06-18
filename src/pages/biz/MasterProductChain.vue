@@ -43,7 +43,7 @@
                 <div class="d-flex">
                   <b-icon icon="gear" class="mt-1" size="16" style="color:green" />
                   <h6
-                    class="text-primary ml-2"
+                    class="ml-2"
                   >{{typeOfPart(data.item.part.data.type)}}</h6>
 
                   <octicon name="note" class="mt-1 ml-auto" size="16" style="color:green" />
@@ -55,7 +55,7 @@
                 <div class="d-flex">
                   <b-icon v-if="data.item.data.price" icon="plus-circle" class="mt-1" size="16" style="color:green" />
                   <h6
-                    class="text-primary ml-2"
+                    class="ml-2"
                   >{{data.item.data.price}}</h6>
                   <h6
                     class="text-secondary ml-auto"
@@ -126,7 +126,7 @@ export default {
   },
   async created() {
     let tab = this.$store.getters.currentPage(ROUTE_NAME)
-    tab = tab || "overview"
+    tab = tab || "product"
     this.currentTab = tab
     await this.loadPageData(tab)
   },
