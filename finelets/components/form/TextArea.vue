@@ -1,7 +1,7 @@
 <template>
   <div class="form-group">
     <!-- <octicon v-if="icon" :name="icon" class="mt-2"/> -->
-    <label class="field-label">{{label}}</label>
+    <label v-if="label" class="field-label">{{label}}</label>
     <!-- <textarea class="form-control form-control-sm" rows="6"></textarea> -->
     <textarea :rows="rows" class="form-control form-control-sm"
           :value="value" @input="onInput($event.target.value)"
