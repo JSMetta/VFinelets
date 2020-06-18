@@ -2,6 +2,7 @@ import Home from './pages/biz/Home.vue'
 import ProductForm from './pages/biz/ProductForm.vue'
 import SupplierForm from './pages/biz/SupplierForm.vue'
 import CustomerForm from './pages/biz/CustomerForm.vue'
+import CustomerRequirementForm from './pages/biz/CustomerRequirementForm.vue'
 import MasterProduct from './pages/biz/MasterProduct.vue'
 import MasterSupplier from './pages/biz/MasterSupplier.vue'
 import MasterCustomer from './pages/biz/MasterCustomer.vue'
@@ -91,6 +92,14 @@ const routes = [
       role: ROLE_BIZ
     },
     component: CustomerForm
+  },
+  {
+    path: '/forms/customer/requirement',
+    name: 'customerRequirementForm',
+    meta: {
+      role: ROLE_BIZ
+    },
+    component: CustomerRequirementForm
   }
 ]
 

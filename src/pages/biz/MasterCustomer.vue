@@ -177,7 +177,7 @@ export default {
     onCreateRequirement () {
       this.$store.commit('selected', {key: 'CustomerRequirement'})
       let path = {
-        name: 'requirementForm'
+        name: 'customerRequirementForm'
       }
       this.$router.push(path)
     },
