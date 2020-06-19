@@ -204,6 +204,10 @@ const actions = {
         getters
     }, {url, data}) {
         await $post(url, data)
+    },
+
+    async removeCustomerRequirement(ctx, url) {
+        await $delete(url)
     }
 }
 

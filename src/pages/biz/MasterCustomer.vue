@@ -28,8 +28,6 @@
                     class="text-primary ml-2 selectable"
                     @click="navToRequirement(data.item)"
                   >{{data.item.data.date | onlyDate}}</h6>
-                  <b-avatar button icon="pencil-square" variant="success" class="ml-auto" size="1.5em" 
-                      @click="onEditRequirement(data.item)"></b-avatar>
                 </div>
                 <div class="d-flex">
                   <octicon
@@ -41,6 +39,14 @@
                   <h6 class="ml-2" style="overflow: hidden; text-overflow: ellipsis;">
                     {{data.item.data.title || data.item.data.requirement}}
                   </h6>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="d-flex align-items-center h-100">
+                  <b-avatar button icon="pencil-square" variant="success" size="1.5em" 
+                      class="ml-auto" @click="onEditRequirement(data.item)"></b-avatar>
+                  <b-avatar button icon="x" variant="success" size="1.5em" 
+                      class="ml-1" @click="onRemoveRequirement(data.item)"></b-avatar>
                 </div>
               </div>
             </div>
@@ -180,6 +186,11 @@ export default {
         query: {mode: 'edit'}
       }
       this.$router.push(path)
+    },
+
+    async onRemoveRequirement (val) {
+      await this.$store.dispatch('removeCustomerRequirement', val.links.self)
+      this.loadPageData('requirements')
     },
 
     navToRequirement (data) {
