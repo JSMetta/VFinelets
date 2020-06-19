@@ -8,7 +8,7 @@
       @changed="onPageChanged"
     >
       <div slot="overview">
-        <div class="d-flex  flex-column" style="font-size:15px">
+        <div class="d-flex flex-column" style="font-size:15px">
           <div class="d-flex flex-column mt-3">
             <div class="d-flex">
               <p>客户：</p>
@@ -19,14 +19,21 @@
               <p>地址：</p>
               <p>{{master.entity.customer.data.address}}</p>
             </div>
-          </div> 
-          <div class="w-100">
-            <form-text-area rows="15" label="描述：" readonly v-model="master.data.requirement"/>
-          </div> 
-          <div class="d-flex justify-content-end">
-            <p>需求日期：</p>
-            <p>{{master.data.requirementDate}}</p>
-          </div> 
+            <div class="d-flex">
+              <p>需求：</p>
+            </div>
+            <div class="d-flex">
+              <div v-html="markdown" class="border  w-100" style="height:300px;overflow: scroll;"></div>
+            </div>
+            <div class="d-flex justify-content-end">
+              <p>需求日期：</p>
+              <p>{{master.data.requirementDate}}</p>
+            </div>
+          </div>
+          <!-- <div class="w-100">
+            <form-text-area rows="15" label="描述：" readonly  v-model="markdown"/>
+            <div v-html="markdown" class="border" style="height:157px"></div>
+          </div>-->
         </div>
       </div>
       <div slot="productChains">
@@ -47,9 +54,10 @@
                     @click="navToProductChain(data.item)"
                   >{{data.item.data.desc}}</h6>
                   <b-icon icon="puzzle" class="mt-1 ml-auto" size="16" style="color:green"></b-icon>
-                  <h6 class="text-primary ml-2 selectable"  @click="navToProduct(data.item.product)">
-                    {{data.item.product.data.desc}}
-                  </h6>
+                  <h6
+                    class="text-primary ml-2 selectable"
+                    @click="navToProduct(data.item.product)"
+                  >{{data.item.product.data.desc}}</h6>
                 </div>
                 <div class="d-flex">
                   <h6
@@ -71,6 +79,7 @@ import MasterDetails from "../../../finelets/components/MasterDetails/MasterDeta
 import FiltersForm from "../../../finelets/components/FiltersForm.vue"
 import ItemList from "../../../finelets/components/ItemList.vue"
 import util from "../../../finelets/helpers/util.js"
+import marked from "marked"
 
 const ROUTE_NAME = "masterCustomerRequirement"
 
@@ -84,28 +93,27 @@ export default {
     return {
       currentTab: null,
       productChains: []
-    }
+    };
   },
   computed: {
     master() {
-      const entity = this.$store.getters.selected('CustomerRequirement')
-      entity.data.requirementDate = util.dateFormat(entity.data.date)
+      const entity = this.$store.getters.selected("CustomerRequirement");
+      entity.data.requirementDate = util.dateFormat(entity.data.date);
       return {
         editable: false,
         avatar: "/src/static/img/suixi.jpg",
-        title: '客户需求',
-        items: [
-        ],
+        title: "客户需求",
+        items: [],
         data: entity.data,
         entity,
         update: this.onSaveMaster
-      }
+      };
     },
     filters() {
       return {
         search: { width: 400 },
         cmdButton: { text: "新增" }
-      }
+      };
     },
     tabs() {
       return [
@@ -117,31 +125,38 @@ export default {
           id: "productChains",
           title: "方案"
         }
-      ]
+      ];
+    },
+    markdown() {
+      const entity = this.$store.getters.selected("CustomerRequirement");
+      return marked(entity.data.requirement);
     }
   },
   async created() {
-    let tab = this.$store.getters.currentPage(ROUTE_NAME)
-    tab = tab || "overview"
-    this.currentTab = tab
-    await this.loadPageData(tab)
+    let tab = this.$store.getters.currentPage(ROUTE_NAME);
+    tab = tab || "overview";
+    this.currentTab = tab;
+    await this.loadPageData(tab);
   },
 
   methods: {
     async onSearchProductChains(cond) {
-      const url = this.$store.getters.selected('CustomerRequirement').links.productChains
-      this.productChains = await this.$store.dispatch("searchProductChains", url)
+      const url = this.$store.getters.selected("CustomerRequirement").links
+        .productChains;
+      this.productChains = await this.$store.dispatch(
+        "searchProductChains",
+        url
+      );
     },
 
-    async onSaveMaster(data) {
-    },
+    async onSaveMaster(data) {},
     async loadPageData(page) {
       const loaders = {
         productChains: this.onSearchProductChains
-      }
-      const func = loaders[page]
-      if (!func) return
-      await func({ search: "", filters: [] })
+      };
+      const func = loaders[page];
+      if (!func) return;
+      await func({ search: "", filters: [] });
     },
 
     async onPageChanged(page) {
@@ -149,29 +164,29 @@ export default {
       await this.loadPageData(page);
     },
 
-    onCreateProductChain () {
-      this.$store.commit('selected', {key: 'ProductChain'})
+    onCreateProductChain() {
+      this.$store.commit("selected", { key: "ProductChain" });
       let path = {
-        name: 'productChainForm'
-      }
-      this.$router.push(path)
+        name: "productChainForm"
+      };
+      this.$router.push(path);
     },
 
-    navToProductChain (data) {
-      this.$store.commit("selected", { key: "ProductChain", val: data })
+    navToProductChain(data) {
+      this.$store.commit("selected", { key: "ProductChain", val: data });
       let path = {
-        name: 'masterProductChain'
-      }
-      this.$router.push(path)
+        name: "masterProductChain"
+      };
+      this.$router.push(path);
     },
 
-    navToProduct (data) {
-      this.$store.commit("selected", { key: "Product", val: data })
+    navToProduct(data) {
+      this.$store.commit("selected", { key: "Product", val: data });
       let path = {
         name: "masterProduct"
       };
-      this.$router.push(path)
-    },
+      this.$router.push(path);
+    }
   }
-}
+};
 </script>

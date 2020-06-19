@@ -130,6 +130,22 @@ const actions = {
         return val
     },
 
+    async updateCustomerRequirement({
+        commit
+    }, {
+        data,
+        url
+    }) {
+        await $put(url, data.__v, data)
+        let val = await $get(url)
+        val = await dealWithEntity(val, 'CustomerRequirement', {Customer: 'customer'})
+        commit('selected', {
+            key: 'CustomerRequirement',
+            val
+        })
+        return val
+    },
+
     async getSupplier(ctx, url) {
         let data = await $get(url)
         data = await dealWithEntity(data, 'Supplier', supplierRefs)
@@ -181,6 +197,12 @@ const actions = {
     }, data) {
         const entry = getters.entry
         const url = entry.customers
+        await $post(url, data)
+    },
+
+    async createCustomerRequirement({
+        getters
+    }, {url, data}) {
         await $post(url, data)
     }
 }

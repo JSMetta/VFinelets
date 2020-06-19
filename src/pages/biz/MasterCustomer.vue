@@ -22,40 +22,25 @@
           <template slot-scope="data">
             <div class="row border-0 p-2">
               <div class="col">
-                <div class="d-flex">
+                <div class="d-flex align-self-center">
                   <octicon name="note" class="mt-1" size="16" style="color:green" />
                   <h6
                     class="text-primary ml-2 selectable"
                     @click="navToRequirement(data.item)"
-                  >{{data.item.data.date | date}}</h6>
+                  >{{data.item.data.date | onlyDate}}</h6>
+                  <b-avatar button icon="pencil-square" variant="success" class="ml-auto" size="1.5em" 
+                      @click="onEditRequirement(data.item)"></b-avatar>
                 </div>
                 <div class="d-flex">
                   <octicon
-                    v-if="data.item.data.requirement"
                     name="milestone"
                     class="mt-1"
                     size="16"
                     style="color:green"
                   />
-                  <h6 class="ml-2">{{data.item.data.requirement}}</h6>
-                </div>
-                <div class="d-flex">
-                  <octicon
-                    v-if="data.item.creator"
-                    name="person"
-                    class
-                    size="16"
-                    style="color:green"
-                  />
-                  <h6
-                    v-if="data.item.creator"
-                    class="ml-1"
-                    style="font-size:10px"
-                  >{{data.item.creator.data.name}}</h6>
-                  <h6
-                    class="text-secondary ml-auto"
-                    style="font-size:10px"
-                  >更新于 {{data.item.data.updatedAt | date}}</h6>
+                  <h6 class="ml-2" style="overflow: hidden; text-overflow: ellipsis;">
+                    {{data.item.data.title || data.item.data.requirement}}
+                  </h6>
                 </div>
               </div>
             </div>
@@ -70,6 +55,8 @@
 import MasterDetails from "../../../finelets/components/MasterDetails/MasterDetails.vue"
 import FiltersForm from "../../../finelets/components/FiltersForm.vue"
 import ItemList from "../../../finelets/components/ItemList.vue"
+import marked from "marked"
+
 const ROUTE_NAME = "masterCustomer"
 
 export default {
@@ -135,8 +122,9 @@ export default {
           title: "客户需求"
         }
       ]
-    }
+    },
   },
+
   async created() {
     let tab = this.$store.getters.currentPage(ROUTE_NAME)
     tab = tab || "overview"
@@ -148,7 +136,10 @@ export default {
     async onSearchRequirements(cond) {
       const customer = this.$store.getters.selected('Customer')
       const url = customer.links.requirements
-      this.requirements = await this.$store.dispatch("searchRequirements", url);
+      this.requirements = await this.$store.dispatch("searchRequirements", url)
+      for (let i=0; i<this.requirements.length; i++) {
+        this.requirements[i].data.md = marked(this.requirements[i].data.requirement)
+      }
     },
 
     async onSaveMaster(data) {
@@ -178,6 +169,15 @@ export default {
       this.$store.commit('selected', {key: 'CustomerRequirement'})
       let path = {
         name: 'customerRequirementForm'
+      }
+      this.$router.push(path)
+    },
+
+    onEditRequirement (val) {
+      this.$store.commit('selected', {key: 'CustomerRequirement', val})
+      let path = {
+        name: 'customerRequirementForm',
+        query: {mode: 'edit'}
       }
       this.$router.push(path)
     },
