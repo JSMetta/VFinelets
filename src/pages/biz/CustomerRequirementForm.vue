@@ -10,12 +10,6 @@
         </div>
         <form class="border-top" novalidate="true" @submit.prevent>
           <div class="mt-3">
-            <p v-if="errors.length">
-              <b>Please correct the following error(s):</b>
-              <ul>
-                <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
-              </ul>
-            </p>
             <div class="form-row">
               <div class="col-8">
                 <div class="form-group w-100">
@@ -24,7 +18,7 @@
                     class=""
                   />
                   <label>客户：
-                    <validate-error :text="errors.supplier" />
+                    <validate-error :text="errors.customer" />
                   </label>
                   <div class="d-flex align-items-baseline">
                     <div class="input-group mb-3 mr-auto">
@@ -64,7 +58,7 @@
                     name="calendar"
                     class=""
                   />
-                  <label>日期：</label>
+                  <label>日期：<validate-error :text="errors.date" /></label>
                   <input
                     type="date"
                     class="form-control form-control-sm"
@@ -85,6 +79,7 @@
             <div class="form-row mt-4">
               <div class="col ml-1">
                   <div class="form-group">
+                    <label><validate-error :text="errors.requirement"/></label>
                     <b-tabs active-nav-item-class="font-weight-bold">
                       <b-tab title="需求" active>
                         <form-text-area rows="7" v-model="doc.requirement"/>
@@ -111,6 +106,7 @@
 import {createQueryString} from '../../../finelets/helpers/QueryHelper.js'
 import marked from 'marked'
 import util from '../../../finelets/helpers/util.js'
+import _ from 'lodash'
 
 export default {
   data () {
@@ -187,11 +183,11 @@ export default {
     async save () {
       const state = this.$storerequirement
       this.errors = {}
-      if (!this.docCustomer) this.errors.customer = '必须输入客户'
+      if (!this.doc.customer.name || !this.docCustomer) this.errors.customer = '必须输入客户'
       if (!this.doc.date) this.errors.date = '必须输入需求日期'
-      if (!this.doc.title) this.errors.date = '必须输入标题'
+      if (!this.doc.title) this.errors.title = '必须输入标题'
       if (!this.doc.requirement) this.errors.requirement = '必须输入客户需求'
-      if (this.errors.date || this.errors.requirement  || this.errors.customer) return
+      if (!_.isEqual(this.errors, {})) return
 
       try {
         if (this.$route.query.mode == 'edit') {
