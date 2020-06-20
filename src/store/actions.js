@@ -47,7 +47,9 @@ const actions = {
         if (condi) url = `${url}?${condi}`
         const coll = await $get(url)
         const data = await dealWithCollection(coll, 'ProductChain', {
-            Product: 'product'
+            User: 'creator',
+            Product: 'product',
+            CustomerRequirement: 'customerRequirement'
         })
         return data
     },
@@ -146,6 +148,10 @@ const actions = {
         return val
     },
 
+    async updateResource(ctx, { data,  url }) {
+        await $put(url, data.__v, data)
+    },
+
     async getSupplier(ctx, url) {
         let data = await $get(url)
         data = await dealWithEntity(data, 'Supplier', supplierRefs)
@@ -166,13 +172,14 @@ const actions = {
 
     async getCustomerRequirement(ctx, url) {
         let data = await $get(url)
-        data = await dealWithEntity(data, 'CustomerRequirement', {Customer: 'customer'})
+        data = await dealWithEntity(data, 'CustomerRequirement', {Customer: 'customer', User: 'creator'})
         return data
     },
 
     async getProductChain(ctx, url) {
         let data = await $get(url)
-        data = await dealWithEntity(data, 'ProductChain', {Product: 'product', CustomerRequirement: 'customerRequirement'})
+        data = await dealWithEntity(data, 'ProductChain', {Product: 'product', CustomerRequirement: 'customerRequirement', User: 'creator'})
+        data.customerRequirement = await actions.getCustomerRequirement(ctx, data.customerRequirement.links.self)
         return data
     },
 

@@ -23,17 +23,13 @@
               <p>需求：</p>
             </div>
             <div class="d-flex">
-              <div v-html="markdown" class="border  w-100" style="height:300px;overflow: scroll;"></div>
+              <div v-html="markdown" class="border w-100" style="height:300px;overflow: scroll;"></div>
             </div>
             <div class="d-flex justify-content-end">
               <p>需求日期：</p>
               <p>{{master.data.requirementDate}}</p>
             </div>
           </div>
-          <!-- <div class="w-100">
-            <form-text-area rows="15" label="描述：" readonly  v-model="markdown"/>
-            <div v-html="markdown" class="border" style="height:157px"></div>
-          </div>-->
         </div>
       </div>
       <div slot="productChains">
@@ -52,7 +48,7 @@
                   <h6
                     class="text-primary ml-2 selectable"
                     @click="navToProductChain(data.item)"
-                  >{{data.item.data.desc}}</h6>
+                  >{{data.item.data.title}}</h6>
                   <b-icon icon="puzzle" class="mt-1 ml-auto" size="16" style="color:green"></b-icon>
                   <h6
                     class="text-primary ml-2 selectable"
@@ -63,7 +59,27 @@
                   <h6
                     class="text-secondary ml-auto"
                     style="font-size:10px"
-                  >更新于 {{data.item.data.updatedAt | date}}</h6>
+                  >更新于 {{data.item.data.date | onlyDate}}</h6>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="d-flex align-items-center h-100">
+                  <b-avatar
+                    button
+                    icon="pencil-square"
+                    variant="success"
+                    size="1.5em"
+                    class="ml-auto"
+                    @click="onEditProductChain(data.item)"
+                  ></b-avatar>
+                  <b-avatar
+                    button
+                    icon="x"
+                    variant="success"
+                    size="1.5em"
+                    class="ml-1"
+                    @click="onRemoveProductChain(data.item)"
+                  ></b-avatar>
                 </div>
               </div>
             </div>
@@ -75,13 +91,13 @@
 </template>
 
 <script>
-import MasterDetails from "../../../finelets/components/MasterDetails/MasterDetails.vue"
-import FiltersForm from "../../../finelets/components/FiltersForm.vue"
-import ItemList from "../../../finelets/components/ItemList.vue"
-import util from "../../../finelets/helpers/util.js"
-import marked from "marked"
+import MasterDetails from "../../../finelets/components/MasterDetails/MasterDetails.vue";
+import FiltersForm from "../../../finelets/components/FiltersForm.vue";
+import ItemList from "../../../finelets/components/ItemList.vue";
+import util from "../../../finelets/helpers/util.js";
+import marked from "marked";
 
-const ROUTE_NAME = "masterCustomerRequirement"
+const ROUTE_NAME = "masterCustomerRequirement";
 
 export default {
   components: {
@@ -170,6 +186,28 @@ export default {
         name: "productChainForm"
       };
       this.$router.push(path);
+    },
+
+    onEditProductChain(val) {
+      this.$store.commit("selected", { key: "ProductChain", val });
+      let path = {
+        name: "productChainForm",
+        query: { mode: "edit" }
+      };
+      this.$router.push(path);
+    },
+
+    onRemoveProductChain(val) {
+      this.$bvModal
+        .msgBoxConfirm("您是否确认删除?")
+        .then(ok => {
+           if (ok) {
+             this.$store.dispatch("removeResource", val.links.self)
+              .then(() => {
+                this.loadPageData("productChains");
+              })
+           }
+        })
     },
 
     navToProductChain(data) {
