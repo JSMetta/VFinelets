@@ -3,6 +3,7 @@ import ProductForm from './pages/biz/ProductForm.vue'
 import SupplierForm from './pages/biz/SupplierForm.vue'
 import CustomerForm from './pages/biz/CustomerForm.vue'
 import CustomerRequirementForm from './pages/biz/CustomerRequirementForm.vue'
+import ProductChainForm from './pages/biz/ProductChainForm.vue'
 import MasterProduct from './pages/biz/MasterProduct.vue'
 import MasterSupplier from './pages/biz/MasterSupplier.vue'
 import MasterCustomer from './pages/biz/MasterCustomer.vue'
@@ -100,6 +101,14 @@ const routes = [
       role: ROLE_BIZ
     },
     component: CustomerRequirementForm
+  },
+  {
+    path: '/forms/product/chain',
+    name: 'productChainForm',
+    meta: {
+      role: ROLE_BIZ
+    },
+    component: ProductChainForm
   }
 ]
 

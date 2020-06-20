@@ -197,7 +197,7 @@ export default {
               data: { ...this.doc, customer: this.docCustomer.data.id, creator: this.$store.getters.user.id}
             })
         } else {
-            await this.$store.dispatch('createCustomerRequirement', 
+            await this.$store.dispatch('createResource', 
             {
               url: this.docCustomer.links.requirements,
               data: { ...this.doc, creator: this.$store.getters.user.id}

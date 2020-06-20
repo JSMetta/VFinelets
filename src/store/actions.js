@@ -200,13 +200,11 @@ const actions = {
         await $post(url, data)
     },
 
-    async createCustomerRequirement({
-        getters
-    }, {url, data}) {
+    async createResource(ctx, {url, data}) {
         await $post(url, data)
     },
 
-    async removeCustomerRequirement(ctx, url) {
+    async removeResource(ctx, url) {
         await $delete(url)
     }
 }

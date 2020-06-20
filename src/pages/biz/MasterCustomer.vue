@@ -189,7 +189,7 @@ export default {
     },
 
     async onRemoveRequirement (val) {
-      await this.$store.dispatch('removeCustomerRequirement', val.links.self)
+      await this.$store.dispatch('removeResource', val.links.self)
       this.loadPageData('requirements')
     },
 
