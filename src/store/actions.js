@@ -36,7 +36,6 @@ const actions = {
     
       async runSerialPortProgram ({commit}, url) {
         let res = await $post(url)
-        res = await $get(res.href)
         return res
       }
 }
