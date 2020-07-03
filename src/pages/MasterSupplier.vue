@@ -91,7 +91,7 @@ export default {
       return this.$store.getters.selected('Supplier')
     },
     master () {
-      const supplier = this.selectedSupplier.data
+      const supplier = this.$store.getters.selected('Supplier').data
       return {
         editable: true,
         avatar: masterImg,
