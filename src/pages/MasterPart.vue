@@ -112,7 +112,6 @@ export default {
   computed: {
     master () {
       const part = this.$store.getters.selected('Part').data
-      let img = part.img ? part.img : '/static/img/suixi.jpg'
       let subtitle
       if (part.brand) {
         subtitle = part.brand
@@ -124,7 +123,7 @@ export default {
       }
       return {
         editable: true,
-        logo: img,
+        avatar: '/src/static/img/suixi.jpg',
         title: part.name,
         subtitle,
         items: [
@@ -211,7 +210,7 @@ export default {
       this.purchases = []
       cond.filters = [this.$store.getters.selected('Part').data.id]
       let r = createQueryString(['part'], cond)
-      this.purchases = await state.dispatch('searchPurchases', r)
+      this.purchases = await this.$store.dispatch('searchPurchases', r)
     },
     async onSearchWithdraws (cond) {
       this.withdraws = []

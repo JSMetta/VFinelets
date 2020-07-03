@@ -73,28 +73,28 @@ const actions = {
   async searchParts({
     getters
   }, condi) {
-    const data = await queryCollection.searchCollection(getters, 'parts', condi, 'Part')
+    const data = await searchCollection(getters, 'parts', condi, 'Part')
     return data
   },
 
   async searchSuppliers({
     getters
   }, condi) {
-    const data = await queryCollection.searchCollection(getters, 'suppliers', condi, 'Supplier')
+    const data = await searchCollection(getters, 'suppliers', condi, 'Supplier')
     return data
   },
 
   async searchPurchases({
     getters
   }, condi) {
-    const data = await queryCollection.searchCollection(getters, 'purchases', condi, 'Purchase', purchaseRefs)
+    const data = await searchCollection(getters, 'purchases', condi, 'Purchase', purchaseRefs)
     return data
   },
 
   async searchWithdraws({
     getters
   }, condi) {
-    const data = await queryCollection.searchCollection(getters, 'withdraws', condi, 'Withdraw', withdrawRefs)
+    const data = await searchCollection(getters, 'withdraws', condi, 'Withdraw', withdrawRefs)
     return data
   },
 
@@ -103,7 +103,7 @@ const actions = {
   }, data) {
     await $put(data.links.self, data.data.__v, data.data)
     let updated = await $get(data.links.self)
-    updated = await queryCollection.dealWithEntity(updated, 'Part')
+    updated = await dealWithEntity(updated, 'Part')
     commit('selected', {key: 'Part', val: updated})
   },
 
@@ -112,7 +112,7 @@ const actions = {
   }, data) {
     await $put(data.links.self, data.data.__v, data.data)
     let updated = await $get(data.links.self)
-    updated = await queryCollection.dealWithEntity(updated, 'Supplier')
+    updated = await dealWithEntity(updated, 'Supplier')
     commit('selected', {key: 'Supplier', val: updated})
   },
 
@@ -121,7 +121,7 @@ const actions = {
   }, data) {
     await $put(data.links.self, data.data.__v, data.data)
     const updated = await $get(data.links.self)
-    const entity = await queryCollection.dealWithEntity(updated, 'Purchase', purchaseRefs)
+    const entity = await dealWithEntity(updated, 'Purchase', purchaseRefs)
     commit('selected', {key: 'Purchase', val: entity})
   },
 
@@ -188,7 +188,7 @@ const actions = {
   }) {
     let data = getters.selectedPurchase
     const po = await $get(data.links.self)
-    const entity = await queryCollection.dealWithEntity(po, 'Purchase', purchaseRefs)
+    const entity = await dealWithEntity(po, 'Purchase', purchaseRefs)
     commit('selected', {key: 'Purchase', val: entity})
   },
 }

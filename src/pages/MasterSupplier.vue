@@ -93,7 +93,7 @@ export default {
       const supplier = this.selectedSupplier.data
       return {
         editable: true,
-        logo: '/static/img/suixi.jpg',
+        avatar: '/src/static/img/suixi.jpg',
         title: supplier.name,
         subtitle: supplierTypes(supplier.type),
         items: [

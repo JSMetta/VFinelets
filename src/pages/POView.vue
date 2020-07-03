@@ -68,7 +68,7 @@ export default {
     },
     state () {
       const state = this.selectedPurchase.data.state
-      const s = __.find(typeEnums.purchaseState, item => {
+      const s = _.find(typeEnums.purchaseState, item => {
         return item.value === state
       })
       return s
@@ -87,10 +87,7 @@ export default {
       const transactionsUrl = this.selectedPurchase.links.transactions
       const {id, __v} = this.selectedPurchase.data
       await this.$store.dispatch('poTransaction', {url: transactionsUrl, type: 'commit', data: {id, __v}})
-      let path = {
-        name: 'home'
-      }
-      this.$router.replace(path)
+      this.$router.go(-1)
     },
 
     onPageChanged (page) {

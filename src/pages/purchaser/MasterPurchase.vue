@@ -32,7 +32,7 @@ export default {
       const selectedPurchase = this.$store.getters.selected('Purchase')
       const master = {
         editable: false,
-        logo: selectedPurchase.part.data.img || '/static/img/suixi.jpg',
+        avatar: '/src/static/img/suixi.jpg',
         subtitle: selectedPurchase.data.code,
         title: '采购单'
       }
