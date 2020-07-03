@@ -5,8 +5,7 @@ import {
   $delete
 } from '../../finelets/plugins/fetch'
 import {
-  searchCollection,
-  dealWithEntity
+  searchCollection, dealWithCollection, dealWithEntity
 } from '../../finelets/helpers/DealWithQueryCollection'
 
 const purchaseRefs = {
@@ -167,6 +166,12 @@ const actions = {
     await $post(url, data)
   },
 
+  async getPoTransactions (ctx, url) {
+    const coll = await $get(url)
+    let data = await dealWithCollection(coll, 'PoTransaction', { User: 'actor' })
+    return data
+  },
+
   async poTransaction({
     getters
   }, {
@@ -186,7 +191,7 @@ const actions = {
     getters,
     commit
   }) {
-    let data = getters.selectedPurchase
+    let data = getters.selected('Purchase')
     const po = await $get(data.links.self)
     const entity = await dealWithEntity(po, 'Purchase', purchaseRefs)
     commit('selected', {key: 'Purchase', val: entity})

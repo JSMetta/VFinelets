@@ -117,7 +117,6 @@ export default {
       const {id, __v} = pur.data
       await state.dispatch('poTransaction', {url: transactionsUrl, type: 'commit', data: {id, __v}})
       await state.dispatch('refreshSelectedPurchase')
-      this.$router.go()
     }
   }
 }

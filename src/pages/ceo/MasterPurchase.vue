@@ -115,6 +115,9 @@ export default {
     }
   },
   computed: {
+    selectedPurchase () {
+      return this.$store.getters.selected('Purchase')
+    },
     master () {
       const selectedPurchase = this.$store.getters.selected('Purchase')
       const master = {
@@ -174,7 +177,7 @@ export default {
       if (this.opinion) data.data.remark = this.opinion
       await this.$store.dispatch('poTransaction', data)
       await this.$store.dispatch('refreshSelectedPurchase')
-      this.$router.go()
+      // this.$router.go(-1)
     },
     async act (type) {
       if (!type) return
