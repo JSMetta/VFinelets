@@ -65,6 +65,7 @@ import MasterDetails from '../../finelets/components/MasterDetails/MasterDetails
 import FiltersForm from '../../finelets/components/FiltersForm.vue'
 import ItemList from '../../finelets/components/ItemList.vue'
 import {poProgress} from '../helpers/PurchaseHelper.js'
+import masterImg from '../static/img/suixi.jpg'
 
 export default {
   components: {
@@ -93,7 +94,7 @@ export default {
       const supplier = this.selectedSupplier.data
       return {
         editable: true,
-        avatar: '/src/static/img/suixi.jpg',
+        avatar: masterImg,
         title: supplier.name,
         subtitle: supplierTypes(supplier.type),
         items: [

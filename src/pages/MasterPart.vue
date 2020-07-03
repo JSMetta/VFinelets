@@ -94,6 +94,7 @@ import MasterDetails from '../../finelets/components/MasterDetails/MasterDetails
 import FiltersForm from '../../finelets/components/FiltersForm.vue'
 import ItemList from '../../finelets/components/ItemList.vue'
 import {poProgress} from '../helpers/PurchaseHelper.js'
+import masterImg from '../static/img/suixi.jpg'
 
 const ROUTE_NAME = 'masterPart'
 export default {
@@ -123,7 +124,7 @@ export default {
       }
       return {
         editable: true,
-        avatar: '/src/static/img/suixi.jpg',
+        avatar: masterImg,
         title: part.name,
         subtitle,
         items: [

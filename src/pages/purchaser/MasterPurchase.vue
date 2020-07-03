@@ -14,6 +14,7 @@
 <script>
 import MasterDetails from '../../../finelets/components/MasterDetails/MasterDetails.vue'
 import PoTransactions from '../../components/PoTransactions.vue'
+import masterImg from '../../static/img/suixi.jpg'
 
 const ROUTE_NAME = 'masterPurchase'
 
@@ -32,7 +33,7 @@ export default {
       const selectedPurchase = this.$store.getters.selected('Purchase')
       const master = {
         editable: false,
-        avatar: '/src/static/img/suixi.jpg',
+        avatar: masterImg,
         subtitle: selectedPurchase.data.code,
         title: '采购单'
       }

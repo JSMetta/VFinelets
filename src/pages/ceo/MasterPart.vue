@@ -53,6 +53,7 @@ import MasterDetails from '../../../finelets/components/MasterDetails/MasterDeta
 import FiltersForm from '../../../finelets/components/FiltersForm.vue'
 import ItemList from '../../../finelets/components/ItemList.vue'
 import {poProgress} from '../../helpers/PurchaseHelper'
+import masterImg from '../../static/img/suixi.jpg'
 
 const ROUTE_NAME = 'ceoMasterPart'
 
@@ -71,7 +72,7 @@ export default {
   computed: {
     master () {
       const part = this.$store.getters.selected('Part').data
-      let img = part.img ? part.img : '/static/img/suixi.jpg'
+      let img = part.img ? part.img : masterImg
       let subtitle
       if (part.brand) {
         subtitle = part.brand

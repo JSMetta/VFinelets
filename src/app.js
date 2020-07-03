@@ -3,7 +3,7 @@ import createVueApp from '../finelets/createVueApp'
 createVueApp({
     app: {
         name: 'Cross',
-        loginPageTitle: 'JSMetta Cross',
+        loginPageTitle: 'JSMetta Cross v2.0',
         roles: [
             { name: '设计人员', value: 'DEV' },
             { name: '检测员', value: 'OPR' },

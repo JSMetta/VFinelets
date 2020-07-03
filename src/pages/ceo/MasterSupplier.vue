@@ -60,6 +60,7 @@ import MasterDetails from '../../../finelets/components/MasterDetails/MasterDeta
 import FiltersForm from '../../../finelets/components/FiltersForm.vue'
 import ItemList from '../../../finelets/components/ItemList.vue'
 import {poProgress} from '../../helpers/PurchaseHelper.js'
+import masterImg from '../../static/img/suixi.jpg'
 
 const ROUTE_NAME = 'ceoMasterSupplier'
 
@@ -80,7 +81,7 @@ export default {
       const supplier = this.$store.getters.selected('Supplier').data
       return {
         visible: true,
-        avatar: '/static/img/suixi.jpg',
+        avatar: masterImg,
         title: supplier.name,
         subtitle: supplierTypes(supplier.type),
         items: [

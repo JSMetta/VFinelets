@@ -96,6 +96,7 @@ import _ from 'lodash'
 import typeEnums from '../../helpers/Enums.js'
 import MasterDetails from '../../../finelets/components/MasterDetails/MasterDetails.vue'
 import PoTransactions from '../../components/PoTransactions.vue'
+import masterImg from '../../static/img/suixi.jpg'
 
 const ROUTE_NAME = 'ceoMasterPurchase'
 
@@ -120,7 +121,7 @@ export default {
     master () {
       const master = {
         editable: false,
-        logo: this.selectedPurchase.part.data.img || '/static/img/suixi.jpg',
+        logo: this.selectedPurchase.part.data.img || masterImg,
         subtitle: this.selectedPurchase.data.code,
         title: '采购单'
       }
