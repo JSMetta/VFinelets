@@ -115,27 +115,25 @@ export default {
     }
   },
   computed: {
-    selectedPurchase () {
-      return this.$store.getters.selected('Purchase')
-    },
     master () {
+      const selectedPurchase = this.$store.getters.selected('Purchase')
       const master = {
         editable: false,
-        logo: this.selectedPurchase.part.data.img || masterImg,
-        subtitle: this.selectedPurchase.data.code,
+        avatar: selectedPurchase.part.data.img || masterImg,
+        subtitle: selectedPurchase.data.code,
         title: '采购单'
       }
       return master
     },
     state () {
-      const state = this.selectedPurchase.data.state
+      const state = this.$store.getters.selected('Purchase').data.state
       const s = _.find(typeEnums.purchaseState, item => {
         return item.value === state
       })
       return s
     },
     mayReview () {
-      return this.selectedPurchase.data.state === 'Review'
+      return this.$store.getters.selected('Purchase').data.state === 'Review'
     },
     tabs () {
       return [
@@ -150,7 +148,7 @@ export default {
       ]
     },
     actions () {
-      const state = this.selectedPurchase.data.state
+      const state = this.$store.getters.selected('Purchase').data.state
       return state === 'Review' ? {
         value: 'review',
         options: [
@@ -169,8 +167,9 @@ export default {
       if (pass === undefined) {
         return
       }
-      const transactionsUrl = this.selectedPurchase.links.transactions
-      const {id, __v} = this.selectedPurchase.data
+      const selectedPurchase = this.$store.getters.selected('Purchase')
+      const transactionsUrl = selectedPurchase.links.transactions
+      const {id, __v} = selectedPurchase.data
       const data = {url: transactionsUrl, type: 'review', data: {id, __v, pass}}
       if (this.opinion) data.data.remark = this.opinion
       await this.$store.dispatch('poTransaction', data)

@@ -80,8 +80,9 @@ export default {
     }
   },
   async created () {
-    this.remark = this.selectedPurchase.data.remark
-    const data = await getPoTransactions(this.selectedPurchase.links.transactions)
+    const selectedPurchase = this.$store.getters.selected('Purchase')
+    this.remark = selectedPurchase.data.remark
+    const data = await getPoTransactions(selectedPurchase.links.transactions)
     this.transactions = _.map(data, item => {
       return {
         type: transactionNames[item.data.type],
