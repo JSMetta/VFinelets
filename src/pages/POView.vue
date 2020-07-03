@@ -87,7 +87,7 @@ export default {
       const transactionsUrl = this.selectedPurchase.links.transactions
       const {id, __v} = this.selectedPurchase.data
       await this.$store.dispatch('poTransaction', {url: transactionsUrl, type: 'commit', data: {id, __v}})
-      this.$router.go(-1)
+      await this.$store.dispatch('refreshSelectedPurchase')
     },
 
     onPageChanged (page) {

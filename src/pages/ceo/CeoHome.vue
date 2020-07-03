@@ -219,13 +219,10 @@ export default {
     master () {
       const user = this.$store.getters.user
       const data = {
-        ...user
-      }
-      return {
         editable: true,
         avatar: this.$store.getters.avatar,
-        title: user.name,
-        email: user.email,
+        title: null,
+        email: null,
         items: [
           {
             name: 'userId',
@@ -240,9 +237,15 @@ export default {
             icon: 'mail'
           }
         ],
-        data,
+        data: null,
         update: this.onSaveMaster
       }
+      if(user) {
+        data.title = user.name
+        data.email = user.email
+        data.data = { ...user }
+      }
+      return data
     },
     partFilters () {
       return {
