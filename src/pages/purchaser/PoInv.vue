@@ -55,22 +55,7 @@
                 <div class="form-group mt-3" style="width: 300px">
                   <octicon name="location"/>
                   <label>库位：</label>
-                  <div class="input-group mb-3">
-                      <input type="text" class="form-control form-control-sm" v-model="inv.loc"
-                            @change="onLocInputed"/>
-                      <div class="input-group-append">
-                        <div class="dropdown">
-                          <button type="button" class="btn btn-success dropdown-toggle border-0 btn-sm"
-                            data-toggle="dropdown" @click="onLocDropdown"/>
-                          <div class="dropdown-menu">
-                            <a class="dropdown-item" v-for="(loc, index) in locs.items" :key="index"
-                              @click="onLocSelected(loc)">
-                              {{loc}}
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                  <input type="text" class="form-control form-control-sm" v-model="inv.loc"/>
                 </div>
               </div>
               <div class="d-flex w-100 px-2 mb-3">
@@ -133,17 +118,6 @@ export default {
     }
   },
   methods: {
-    async onLocDropdown () {
-      const cond = { search: this.inv.loc, filters: [] }
-      let r = createQueryString([], cond)
-      let data = await this.$store.dispatch('searchLocs', r)
-      this.locs = data
-    },
-    onLocSelected (selected) {
-      this.inv.loc = selected
-    },
-    onLocInputed () {
-    },
     cancel () {
       this.$router.back()
     },

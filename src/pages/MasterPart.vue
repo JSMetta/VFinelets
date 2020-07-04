@@ -1,12 +1,6 @@
 <template>
   <master-details :master="master">
       <tabpage class="col-9" :tabs="tabs" :activated="currentTab" slot="details" @changed="onPageChanged">
-        <div slot="overview">
-          <h1>Welcome to our support center 1.0.1</h1>
-          <p>
-            Here we will list all indexed about current part!
-          </p>
-        </div>
         <div slot="purchases">
           <filters-form
             :config="purchaseFilters"
@@ -58,25 +52,29 @@
             <template slot-scope="po">
               <div class="row border-0 p-2">
                 <div class="col">
-                  <div class="d-flex justify-content-between">
-                      <h6 class="text-primary mb-1">
+                  <div class="d-flex">
+                    <h6 class="text-primary mb-1 mr-auto selectable" @click="selectWithdraw(po.item)">
+                        <octicon name="milestone" scale="1" style="color:green"/>
+                        {{po.item.data.code}}
+                    </h6>
+                  </div>
+                  <div class="d-flex justify-content-between mt-1">
+                      <h6 class="mb-1">
                         <octicon name="calendar" scale="1" style="color:green"/>
                         {{po.item.data.date | onlyDate}}
                       </h6>
-                      <h6 class="text-primary mb-1">
+                      <h6 class="mb-1">
                         <octicon name="database" scale="1" style="color:green"/>
                         <span class="ml-1">{{po.item.data.qty}}</span>
                       </h6>
-                      <h6 class="text-primary mb-1">
+                      <h6 class="mb-1">
                         <octicon name="person" scale="1" style="color:green"/>
                         <span class="ml-1">{{po.item.actor.data.name}}</span>
                       </h6>
                   </div>
                   <div class="d-flex mt-1">
-                    <octicon name="primitive-dot" scale="1.1" style="color:yellow"/>
+                    <octicon v-if="po.item.data.remark" name="primitive-dot" scale="1.1" style="color:yellow"/>
                     <span class="ml-1" style="font-size:10px">{{po.item.data.remark}}</span>
-                    <octicon v-if="po.item.data.tags" name="tag" class="ml-3 mt-1 ml-auto" size="16" style="color:green"/>
-                    <h6 class="ml-1 mt-1"  style="font-size:10px">{{po.item.data.tags}}</h6>
                   </div>
                 </div>
               </div>
@@ -176,10 +174,6 @@ export default {
     tabs () {
       return [
         {
-          id: 'overview',
-          title: '概要'
-        },
-        {
           id: 'purchases',
           title: '采购'
         },
@@ -238,6 +232,9 @@ export default {
         name: 'masterSupplier'
       }
       this.$router.push(path)
+    },
+    selectWithdraw (doc) {
+      this.$store.commit('selected', {key: 'Withdraw', val: doc})
     },
     selectPurchase (po) {
       this.$store.commit('selected', {key: 'Purchase', val: po})
