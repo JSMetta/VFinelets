@@ -71,7 +71,7 @@
                     <p v-if="errors.result" class="text-danger">{{ errors.result }}</p>
                   </div>
                   <div class="d-flex justify-content-center mt-3">
-                    <icon-button class="ml-1" icon="database" text="保存" @click="save" />
+                    <icon-button class="ml-1" icon="database" text="保存" @click="save()" />
                     <icon-button class="ml-1" icon="circle-slash" text="取消" @click="cancel" />
                   </div>
                 </div>
@@ -158,7 +158,7 @@ export default {
 
       try {
         await this.$store.dispatch("updatePwd", {
-          id: state.getters.user.id,
+          id: this.$store.getters.user.id,
           data: { oldPassword: this.oldPassword, password: this.password }
         });
         this.oldPassword = null;
