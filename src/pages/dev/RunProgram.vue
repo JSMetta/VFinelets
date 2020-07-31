@@ -168,7 +168,7 @@ export default {
       const state = this.$store
       try {
         let currentDoc = state.getters.selectedProgram
-        const res = await state.dispatch('runSerialPortProgram', currentDoc.links.run)
+        const res = await state.dispatch('runSerialPortProgram', currentDoc.links.processes)
         this.logHref = res.href
         this.logs = res.Process.logs
         let t = setInterval(async () => {
